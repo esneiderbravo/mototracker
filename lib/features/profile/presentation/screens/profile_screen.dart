@@ -50,9 +50,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       _loadedUserId = userId;
       _avatarUrl = (avatarUrl?.isEmpty ?? true) ? null : avatarUrl;
       _selectedAvatar = null;
-      _fullNameController.text = (fullName?.isNotEmpty ?? false)
-          ? fullName!
-          : fallbackDisplayName;
+      _fullNameController.text = (fullName?.isNotEmpty ?? false) ? fullName! : fallbackDisplayName;
       _selectedPhoneCountryIso2 = countryIso;
       _phoneDigits = _digitsOnly(phone);
       _phoneController.text = _toLocalDigits(_phoneDigits, countryIso);
@@ -84,14 +82,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       var avatarUrl = _avatarUrl;
       if (_selectedAvatar != null) {
         final bytes = await _selectedAvatar!.readAsBytes();
-        avatarUrl = await ref.read(authRepositoryProvider).uploadAvatar(
-          userId: userId,
-          fileName: _selectedAvatar!.name,
-          bytes: bytes,
-        );
+        avatarUrl = await ref
+            .read(authRepositoryProvider)
+            .uploadAvatar(userId: userId, fileName: _selectedAvatar!.name, bytes: bytes);
       }
 
-      await ref.read(authRepositoryProvider).updateProfile(
+      await ref
+          .read(authRepositoryProvider)
+          .updateProfile(
             fullName: _fullNameController.text.trim(),
             phone: _phoneDigits.isNotEmpty
                 ? _phoneDigits
@@ -264,7 +262,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   setState(() {
                     _selectedPhoneCountryIso2 = country.code;
                     if (_phoneController.text.trim().isNotEmpty) {
-                      _phoneDigits = _digitsOnly('${country.dialCode}${_phoneController.text.trim()}');
+                      _phoneDigits = _digitsOnly(
+                        '${country.dialCode}${_phoneController.text.trim()}',
+                      );
                     }
                   });
                 },
@@ -444,5 +444,3 @@ String _toLocalDigits(String rawDigits, String iso2) {
 
   return digits;
 }
-
-

@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 
 import '../../core/theme/theme_tokens.dart';
@@ -32,11 +30,7 @@ class AppAlerts {
 
   // ── Error ─────────────────────────────────────────────────────────────────
 
-  static void error(
-    BuildContext context, {
-    required String message,
-    Object? detail,
-  }) {
+  static void error(BuildContext context, {required String message, Object? detail}) {
     final displayMessage = detail != null ? '$message\n${_friendlyDetail(detail)}' : message;
     _show(
       context,
@@ -64,8 +58,7 @@ class AppAlerts {
   }) {
     if (!context.mounted) return;
     final mediaQuery = MediaQuery.of(context);
-    final topOffset = mediaQuery.viewPadding.top + 72;
-    final bottomOffset = math.max(16.0, mediaQuery.size.height - topOffset - 90);
+    final bottomInset = mediaQuery.viewPadding.bottom + mediaQuery.viewInsets.bottom;
 
     final messenger = ScaffoldMessenger.of(context);
     messenger
@@ -75,7 +68,7 @@ class AppAlerts {
         SnackBar(
           backgroundColor: backgroundColor,
           behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.fromLTRB(16, 0, 16, bottomOffset),
+          margin: EdgeInsets.fromLTRB(16, 0, 16, 16 + bottomInset),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
           duration: const Duration(seconds: 3),
           content: Row(
@@ -85,11 +78,7 @@ class AppAlerts {
               Expanded(
                 child: Text(
                   message,
-                  style: TextStyle(
-                    color: textColor,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: TextStyle(color: textColor, fontSize: 15, fontWeight: FontWeight.w600),
                 ),
               ),
             ],
@@ -106,4 +95,3 @@ class AppAlerts {
     return firstLine.length > 120 ? '${firstLine.substring(0, 120)}…' : firstLine;
   }
 }
-

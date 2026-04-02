@@ -25,4 +25,3 @@ class FallbackAiAutofillService implements AiAutofillService {
     return data.year > 1950 && data.year <= DateTime.now().year + 1;
   }
 }
-

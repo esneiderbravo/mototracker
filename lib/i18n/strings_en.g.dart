@@ -58,6 +58,9 @@ class TranslationsAiEn {
 	/// en: 'AI Autofill'
 	String get autofill => 'AI Autofill';
 
+	/// en: 'Search with AI'
+	String get searchWithAi => 'Search with AI';
+
 	/// en: 'Yamaha R3 2022'
 	String get hintExample => 'Yamaha R3 2022';
 
@@ -317,6 +320,7 @@ extension on Translations {
 	dynamic _flatMapFunction(String path) {
 		return switch (path) {
 			'ai.autofill' => 'AI Autofill',
+			'ai.searchWithAi' => 'Search with AI',
 			'ai.hintExample' => 'Yamaha R3 2022',
 			'ai.error' => 'AI error',
 			'auth.error' => 'Authentication failed',

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../core/constants/env.dart';
 import '../../../../core/theme/theme_tokens.dart';
 import '../../../../i18n/strings.g.dart';
 import '../../../../shared/widgets/app_alerts.dart';
@@ -47,13 +48,30 @@ class _AddMotorcycleScreenState extends ConsumerState<AddMotorcycleScreen> {
   }
 
   Future<void> _autofill() async {
-    if (_aiQuery.text.trim().isEmpty) return;
+    final query = _aiQuery.text.trim();
+    if (query.isEmpty) return;
+    if (Env.groqApiKey.isEmpty) {
+      if (!mounted) return;
+      final t = Translations.of(context);
+      AppAlerts.error(
+        context,
+        message: t.ai.error,
+        detail: 'Missing GROQ_API_KEY. Run with --dart-define-from-file=config/env.json.',
+      );
+      return;
+    }
+
     setState(() => _isAiLoading = true);
 
     try {
       final service = ref.read(aiAutofillServiceProvider);
-      final response = await service.autofillFromPrompt(_aiQuery.text.trim());
-      if (response == null) return;
+      final response = await service.autofillFromPrompt(query);
+      if (response == null) {
+        if (!mounted) return;
+        final t = Translations.of(context);
+        AppAlerts.error(context, message: t.ai.error, detail: 'AI provider returned no data.');
+        return;
+      }
 
       _makeController.text = response.make;
       _modelController.text = response.model;
@@ -131,219 +149,239 @@ class _AddMotorcycleScreenState extends ConsumerState<AddMotorcycleScreen> {
     final t = Translations.of(context);
 
     return Scaffold(
+      backgroundColor: ThemeTokens.background,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
-          child: Container(
-            decoration: BoxDecoration(
-              color: ThemeTokens.surface,
-              borderRadius: BorderRadius.circular(28),
-              border: Border.all(color: ThemeTokens.border),
-            ),
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(18),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            t.garage.addMotorcycle,
+          child: Column(
+            children: [
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: ThemeTokens.surface,
+                    borderRadius: BorderRadius.circular(28),
+                    border: Border.all(color: ThemeTokens.border),
+                  ),
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.fromLTRB(18, 18, 18, 10),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  t.garage.addMotorcycle,
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () => context.pop(),
+                                style: IconButton.styleFrom(
+                                  backgroundColor: ThemeTokens.surfaceHighlight,
+                                  foregroundColor: ThemeTokens.textPrimary,
+                                ),
+                                icon: const Icon(Icons.close),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            'Use AI to start fast, then fine-tune details.',
                             style: Theme.of(
                               context,
-                            ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w700),
+                            ).textTheme.bodyMedium?.copyWith(color: ThemeTokens.textSecondary),
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () => context.pop(),
-                          style: IconButton.styleFrom(
-                            backgroundColor: ThemeTokens.surfaceHighlight,
-                            foregroundColor: ThemeTokens.textPrimary,
+                          const SizedBox(height: 16),
+                          _SectionCard(
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: ThemeTokens.primary.withOpacity(0.14),
+                                    borderRadius: BorderRadius.circular(14),
+                                  ),
+                                  child: const Icon(Icons.auto_awesome, color: ThemeTokens.primary),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: TextField(
+                                    controller: _aiQuery,
+                                    textInputAction: TextInputAction.search,
+                                    onSubmitted: (_) => _autofill(),
+                                    decoration: InputDecoration(
+                                      hintText: "${t.ai.searchWithAi}: '${t.ai.hintExample}'",
+                                      border: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                IconButton(
+                                  onPressed: _isAiLoading ? null : _autofill,
+                                  style: IconButton.styleFrom(
+                                    backgroundColor: ThemeTokens.primary.withOpacity(0.18),
+                                    foregroundColor: ThemeTokens.primary,
+                                  ),
+                                  icon: _isAiLoading
+                                      ? const SizedBox(
+                                          width: 18,
+                                          height: 18,
+                                          child: CircularProgressIndicator(strokeWidth: 2),
+                                        )
+                                      : const Icon(Icons.search),
+                                ),
+                              ],
+                            ),
                           ),
-                          icon: const Icon(Icons.close),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: Colors.black26,
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(color: ThemeTokens.primary.withOpacity(0.6)),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.auto_awesome, color: ThemeTokens.primary),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: TextField(
-                              controller: _aiQuery,
-                              decoration: InputDecoration(
-                                hintText: "Search with AI: '${t.ai.hintExample}'",
-                                border: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                          const SizedBox(height: 12),
+                          InkWell(
+                            onTap: _pickImage,
+                            borderRadius: BorderRadius.circular(20),
+                            child: Container(
+                              height: 170,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: ThemeTokens.border),
+                                gradient: const LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [Color(0xFF141414), Color(0xFF0E0E0E)],
+                                ),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.camera_alt_outlined,
+                                    color: ThemeTokens.textSecondary,
+                                    size: 40,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    _selectedImage == null
+                                        ? t.garage.addPhoto
+                                        : _selectedImage!.name,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      color: ThemeTokens.textSecondary,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                          IconButton(
-                            onPressed: _isAiLoading ? null : _autofill,
-                            style: IconButton.styleFrom(
-                              backgroundColor: ThemeTokens.primary.withOpacity(0.15),
-                              foregroundColor: ThemeTokens.primary,
-                            ),
-                            icon: _isAiLoading
-                                ? const SizedBox(
-                                    width: 18,
-                                    height: 18,
-                                    child: CircularProgressIndicator(strokeWidth: 2),
-                                  )
-                                : const Icon(Icons.search),
+                          const SizedBox(height: 16),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: _ModernTextField(
+                                  label: t.garage.make,
+                                  controller: _makeController,
+                                  validator: (value) => (value == null || value.isEmpty)
+                                      ? t.shared.requiredField
+                                      : null,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: _ModernTextField(
+                                  label: t.garage.model,
+                                  controller: _modelController,
+                                  validator: (value) => (value == null || value.isEmpty)
+                                      ? t.shared.requiredField
+                                      : null,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: _ModernTextField(
+                                  label: t.garage.year,
+                                  controller: _yearController,
+                                  keyboardType: TextInputType.number,
+                                  validator: (value) => (int.tryParse(value ?? '') == null)
+                                      ? t.shared.invalidNumber
+                                      : null,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: _ModernTextField(
+                                  label: t.garage.color,
+                                  controller: _colorController,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: _ModernTextField(
+                                  label: t.garage.licensePlate,
+                                  controller: _plateController,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: _ModernTextField(
+                                  label: t.garage.currentKm,
+                                  controller: _kmController,
+                                  keyboardType: TextInputType.number,
+                                  validator: (value) => (int.tryParse(value ?? '') == null)
+                                      ? t.shared.invalidNumber
+                                      : null,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 14),
-                    InkWell(
-                      onTap: _pickImage,
-                      borderRadius: BorderRadius.circular(24),
-                      child: Container(
-                        height: 180,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Colors.black38,
-                          borderRadius: BorderRadius.circular(24),
-                          border: Border.all(color: ThemeTokens.border, style: BorderStyle.solid),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.camera_alt_outlined,
-                              color: ThemeTokens.textSecondary,
-                              size: 44,
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              _selectedImage == null ? t.garage.addPhoto : _selectedImage!.name,
-                              style: const TextStyle(
-                                color: ThemeTokens.textSecondary,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(child: _FieldLabel(label: t.garage.make)),
-                        const SizedBox(width: 10),
-                        Expanded(child: _FieldLabel(label: t.garage.model)),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: _makeController,
-                            validator: (value) =>
-                                (value == null || value.isEmpty) ? t.shared.requiredField : null,
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: TextFormField(
-                            controller: _modelController,
-                            validator: (value) =>
-                                (value == null || value.isEmpty) ? t.shared.requiredField : null,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Expanded(child: _FieldLabel(label: t.garage.year)),
-                        const SizedBox(width: 10),
-                        Expanded(child: _FieldLabel(label: t.garage.color)),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: _yearController,
-                            keyboardType: TextInputType.number,
-                            validator: (value) =>
-                                (int.tryParse(value ?? '') == null) ? t.shared.invalidNumber : null,
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(child: TextFormField(controller: _colorController)),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Expanded(child: _FieldLabel(label: t.garage.licensePlate)),
-                        const SizedBox(width: 10),
-                        Expanded(child: _FieldLabel(label: t.garage.currentKm)),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(child: TextFormField(controller: _plateController)),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: TextFormField(
-                            controller: _kmController,
-                            keyboardType: TextInputType.number,
-                            validator: (value) =>
-                                (int.tryParse(value ?? '') == null) ? t.shared.invalidNumber : null,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 22),
-                    DecoratedBox(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(18),
-                        boxShadow: [
-                          BoxShadow(
-                            color: ThemeTokens.primary.withOpacity(0.28),
-                            blurRadius: 24,
-                            spreadRadius: 1,
-                          ),
-                        ],
-                      ),
-                      child: ElevatedButton(
-                        onPressed: _isSaving ? null : _save,
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 18),
-                        ),
-                        child: _isSaving
-                            ? const SizedBox(
-                                width: 18,
-                                height: 18,
-                                child: CircularProgressIndicator(strokeWidth: 2),
-                              )
-                            : Text(
-                                t.garage.save,
-                                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
-                              ),
-                      ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(18),
+                  boxShadow: [
+                    BoxShadow(
+                      color: ThemeTokens.primary.withOpacity(0.28),
+                      blurRadius: 24,
+                      spreadRadius: 1,
                     ),
                   ],
                 ),
+                child: ElevatedButton(
+                  onPressed: _isSaving ? null : _save,
+                  style: ElevatedButton.styleFrom(minimumSize: const Size(double.infinity, 58)),
+                  child: _isSaving
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : Text(
+                          t.garage.save,
+                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                        ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),
@@ -351,16 +389,83 @@ class _AddMotorcycleScreenState extends ConsumerState<AddMotorcycleScreen> {
   }
 }
 
-class _FieldLabel extends StatelessWidget {
-  const _FieldLabel({required this.label});
+class _SectionCard extends StatelessWidget {
+  const _SectionCard({required this.child});
 
-  final String label;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 4, bottom: 6),
-      child: Text(label, style: const TextStyle(color: ThemeTokens.textSecondary, fontSize: 15)),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: ThemeTokens.surfaceHighlight.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: ThemeTokens.primary.withOpacity(0.45)),
+      ),
+      child: child,
+    );
+  }
+}
+
+class _ModernTextField extends StatelessWidget {
+  const _ModernTextField({
+    required this.label,
+    required this.controller,
+    this.keyboardType,
+    this.validator,
+  });
+
+  final String label;
+  final TextEditingController controller;
+  final TextInputType? keyboardType;
+  final String? Function(String?)? validator;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 2, bottom: 6),
+          child: Text(
+            label,
+            style: const TextStyle(
+              color: ThemeTokens.textSecondary,
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        TextFormField(
+          controller: controller,
+          keyboardType: keyboardType,
+          validator: validator,
+          style: const TextStyle(color: ThemeTokens.textPrimary, fontWeight: FontWeight.w600),
+          decoration: InputDecoration(
+            isDense: true,
+            filled: true,
+            fillColor: ThemeTokens.surfaceHighlight,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(color: ThemeTokens.border),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(color: ThemeTokens.primary, width: 1.2),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(color: Colors.redAccent),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(color: Colors.redAccent),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

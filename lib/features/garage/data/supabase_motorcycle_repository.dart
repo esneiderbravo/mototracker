@@ -36,7 +36,7 @@ class SupabaseMotorcycleRepository implements MotorcycleRepository {
   @override
   Future<void> add(Motorcycle motorcycle) async {
     final client = _requiredClient;
-    await client.from('motorcycles').insert(motorcycle.toJson());
+    await client.from('motorcycles').insert(motorcycle.toInsertJson());
   }
 
   @override

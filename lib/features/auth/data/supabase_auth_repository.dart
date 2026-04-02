@@ -61,11 +61,7 @@ class SupabaseAuthRepository implements AuthRepository {
       data['avatar_url'] = avatarUrl;
     }
 
-    await client.auth.updateUser(
-      UserAttributes(
-        data: data,
-      ),
-    );
+    await client.auth.updateUser(UserAttributes(data: data));
   }
 
   @override

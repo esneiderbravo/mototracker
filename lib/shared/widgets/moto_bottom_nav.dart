@@ -42,11 +42,7 @@ class MotoBottomNav extends StatelessWidget {
                     ),
                     border: Border.all(color: ThemeTokens.border.withValues(alpha: 0.9)),
                     boxShadow: const [
-                      BoxShadow(
-                        color: Color(0x33000000),
-                        blurRadius: 16,
-                        offset: Offset(0, 8),
-                      ),
+                      BoxShadow(color: Color(0x33000000), blurRadius: 16, offset: Offset(0, 8)),
                     ],
                   ),
                   child: Padding(
@@ -114,9 +110,7 @@ class _NavItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             color: isSelected ? ThemeTokens.primary.withValues(alpha: 0.2) : Colors.transparent,
             border: Border.all(
-              color: isSelected
-                  ? ThemeTokens.primary.withValues(alpha: 0.45)
-                  : Colors.transparent,
+              color: isSelected ? ThemeTokens.primary.withValues(alpha: 0.45) : Colors.transparent,
             ),
           ),
           child: Row(

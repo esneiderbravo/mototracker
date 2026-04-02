@@ -18,12 +18,12 @@ class AuthScreen extends ConsumerStatefulWidget {
 }
 
 class _AuthScreenState extends ConsumerState<AuthScreen> {
-  final _emailController    = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _formKey            = GlobalKey<FormState>();
-  bool _isSignUp          = false;
-  bool _isLoading         = false;
-  bool _obscurePassword   = true;
+  final _formKey = GlobalKey<FormState>();
+  bool _isSignUp = false;
+  bool _isLoading = false;
+  bool _obscurePassword = true;
 
   @override
   void dispose() {
@@ -38,15 +38,9 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
     try {
       final repo = ref.read(authRepositoryProvider);
       if (_isSignUp) {
-        await repo.signUp(
-          email: _emailController.text.trim(),
-          password: _passwordController.text,
-        );
+        await repo.signUp(email: _emailController.text.trim(), password: _passwordController.text);
       } else {
-        await repo.signIn(
-          email: _emailController.text.trim(),
-          password: _passwordController.text,
-        );
+        await repo.signIn(email: _emailController.text.trim(), password: _passwordController.text);
       }
       if (!mounted) return;
       context.go('/garage');
@@ -79,9 +73,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
               height: 400,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [Color(0x2EFF5722), Colors.transparent],
-                ),
+                gradient: RadialGradient(colors: [Color(0x2EFF5722), Colors.transparent]),
               ),
             ),
           ),
@@ -93,9 +85,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
               height: 300,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [Color(0x12FF5722), Colors.transparent],
-                ),
+                gradient: RadialGradient(colors: [Color(0x12FF5722), Colors.transparent]),
               ),
             ),
           ),
@@ -116,23 +106,18 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                       const _MotoLogo()
                           .animate()
                           .fadeIn(duration: 400.ms)
-                          .slideY(
-                            begin: -0.12,
-                            end: 0,
-                            duration: 400.ms,
-                            curve: Curves.easeOut,
-                          ),
+                          .slideY(begin: -0.12, end: 0, duration: 400.ms, curve: Curves.easeOut),
 
                       const SizedBox(height: 44),
 
                       // ── mode tabs ──────────────────────────────────────
                       _ModeSwitch(
-                        isSignUp: _isSignUp,
-                        signInLabel: t.auth.signIn,
-                        signUpLabel: t.auth.signUp,
-                        enabled: !_isLoading,
-                        onChanged: (v) => setState(() => _isSignUp = v),
-                      )
+                            isSignUp: _isSignUp,
+                            signInLabel: t.auth.signIn,
+                            signUpLabel: t.auth.signUp,
+                            enabled: !_isLoading,
+                            onChanged: (v) => setState(() => _isSignUp = v),
+                          )
                           .animate(delay: 80.ms)
                           .fadeIn(duration: 350.ms)
                           .slideY(begin: 0.1, end: 0, duration: 350.ms),
@@ -146,22 +131,20 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                           children: [
                             // email
                             TextFormField(
-                              controller: _emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              textInputAction: TextInputAction.next,
-                              decoration: InputDecoration(
-                                labelText: t.auth.email,
-                                prefixIcon: const Icon(
-                                  Icons.alternate_email_rounded,
-                                  size: 20,
-                                  color: ThemeTokens.textSecondary,
-                                ),
-                              ),
-                              validator: (v) =>
-                                  (v == null || !v.contains('@'))
-                                      ? t.auth.invalidEmail
-                                      : null,
-                            )
+                                  controller: _emailController,
+                                  keyboardType: TextInputType.emailAddress,
+                                  textInputAction: TextInputAction.next,
+                                  decoration: InputDecoration(
+                                    labelText: t.auth.email,
+                                    prefixIcon: const Icon(
+                                      Icons.alternate_email_rounded,
+                                      size: 20,
+                                      color: ThemeTokens.textSecondary,
+                                    ),
+                                  ),
+                                  validator: (v) =>
+                                      (v == null || !v.contains('@')) ? t.auth.invalidEmail : null,
+                                )
                                 .animate(delay: 140.ms)
                                 .fadeIn(duration: 350.ms)
                                 .slideX(begin: 0.06, end: 0, duration: 350.ms),
@@ -170,37 +153,34 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
 
                             // password
                             TextFormField(
-                              controller: _passwordController,
-                              obscureText: _obscurePassword,
-                              textInputAction: TextInputAction.done,
-                              onFieldSubmitted: (_) {
-                                if (!_isLoading) _submit();
-                              },
-                              decoration: InputDecoration(
-                                labelText: t.auth.password,
-                                prefixIcon: const Icon(
-                                  Icons.lock_outline_rounded,
-                                  size: 20,
-                                  color: ThemeTokens.textSecondary,
-                                ),
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    _obscurePassword
-                                        ? Icons.visibility_off_outlined
-                                        : Icons.visibility_outlined,
-                                    size: 20,
-                                    color: ThemeTokens.textSecondary,
+                                  controller: _passwordController,
+                                  obscureText: _obscurePassword,
+                                  textInputAction: TextInputAction.done,
+                                  onFieldSubmitted: (_) {
+                                    if (!_isLoading) _submit();
+                                  },
+                                  decoration: InputDecoration(
+                                    labelText: t.auth.password,
+                                    prefixIcon: const Icon(
+                                      Icons.lock_outline_rounded,
+                                      size: 20,
+                                      color: ThemeTokens.textSecondary,
+                                    ),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        _obscurePassword
+                                            ? Icons.visibility_off_outlined
+                                            : Icons.visibility_outlined,
+                                        size: 20,
+                                        color: ThemeTokens.textSecondary,
+                                      ),
+                                      onPressed: () =>
+                                          setState(() => _obscurePassword = !_obscurePassword),
+                                    ),
                                   ),
-                                  onPressed: () => setState(
-                                    () => _obscurePassword = !_obscurePassword,
-                                  ),
-                                ),
-                              ),
-                              validator: (v) =>
-                                  (v == null || v.length < 6)
-                                      ? t.auth.invalidPassword
-                                      : null,
-                            )
+                                  validator: (v) =>
+                                      (v == null || v.length < 6) ? t.auth.invalidPassword : null,
+                                )
                                 .animate(delay: 200.ms)
                                 .fadeIn(duration: 350.ms)
                                 .slideX(begin: 0.06, end: 0, duration: 350.ms),
@@ -212,10 +192,10 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
 
                       // ── CTA button ─────────────────────────────────────
                       _SubmitButton(
-                        isLoading: _isLoading,
-                        label: _isSignUp ? t.auth.signUp : t.auth.signIn,
-                        onTap: _isLoading ? null : _submit,
-                      )
+                            isLoading: _isLoading,
+                            label: _isSignUp ? t.auth.signUp : t.auth.signIn,
+                            onTap: _isLoading ? null : _submit,
+                          )
                           .animate(delay: 260.ms)
                           .fadeIn(duration: 350.ms)
                           .slideY(begin: 0.1, end: 0, duration: 350.ms),
@@ -256,8 +236,14 @@ class _MotoLogo extends StatelessWidget {
           text: const TextSpan(
             style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800, letterSpacing: 2),
             children: [
-              TextSpan(text: 'MOTO',    style: TextStyle(color: ThemeTokens.textPrimary)),
-              TextSpan(text: 'TRACKER', style: TextStyle(color: ThemeTokens.primary)),
+              TextSpan(
+                text: 'MOTO',
+                style: TextStyle(color: ThemeTokens.textPrimary),
+              ),
+              TextSpan(
+                text: 'TRACKER',
+                style: TextStyle(color: ThemeTokens.primary),
+              ),
             ],
           ),
         ),
@@ -312,7 +298,10 @@ class _SpeedometerIconPainter extends CustomPainter {
     for (var i = 0; i < 10; i++) {
       canvas.drawArc(
         Rect.fromCircle(center: center, radius: radius * 0.57),
-        angle, 0.11, false, dashPaint,
+        angle,
+        0.11,
+        false,
+        dashPaint,
       );
       angle += 0.25;
     }
@@ -351,10 +340,10 @@ class _ModeSwitch extends StatelessWidget {
     required this.enabled,
   });
 
-  final bool   isSignUp;
+  final bool isSignUp;
   final String signInLabel;
   final String signUpLabel;
-  final bool   enabled;
+  final bool enabled;
   final ValueChanged<bool> onChanged;
 
   @override
@@ -388,8 +377,8 @@ class _ModeSwitch extends StatelessWidget {
 class _Tab extends StatelessWidget {
   const _Tab({required this.label, required this.selected, required this.onTap});
 
-  final String        label;
-  final bool          selected;
+  final String label;
+  final bool selected;
   final VoidCallback? onTap;
 
   @override
@@ -426,14 +415,10 @@ class _Tab extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _SubmitButton extends StatelessWidget {
-  const _SubmitButton({
-    required this.isLoading,
-    required this.label,
-    required this.onTap,
-  });
+  const _SubmitButton({required this.isLoading, required this.label, required this.onTap});
 
-  final bool          isLoading;
-  final String        label;
+  final bool isLoading;
+  final String label;
   final VoidCallback? onTap;
 
   @override
@@ -448,11 +433,7 @@ class _SubmitButton extends StatelessWidget {
           disabledBackgroundColor: ThemeTokens.primary.withValues(alpha: 0.5),
           elevation: 0,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-          textStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 0.6,
-          ),
+          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, letterSpacing: 0.6),
         ),
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 200),

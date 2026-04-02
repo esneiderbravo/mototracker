@@ -80,4 +80,17 @@ class Motorcycle {
       'created_at': createdAt.toIso8601String(),
     };
   }
+
+  Map<String, dynamic> toInsertJson() {
+    return {
+      'user_id': userId,
+      'make': make,
+      'model': model,
+      'year': year,
+      'color': color,
+      'license_plate': licensePlate,
+      'current_km': currentKm,
+      'image_url': imageUrl,
+    };
+  }
 }

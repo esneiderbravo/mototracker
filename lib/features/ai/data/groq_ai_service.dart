@@ -24,21 +24,13 @@ class GroqAiService implements AiAutofillService {
       'model': Env.groqModel,
       'temperature': 0.2,
       'messages': [
-        {
-          'role': 'system',
-          'content':
-              'You extract motorcycle fields and reply with strict JSON only. No markdown. No explanation.',
-        },
         {'role': 'user', 'content': prompt},
       ],
     });
 
     final response = await _client.post(
       uri,
-      headers: {
-        'Authorization': 'Bearer $apiKey',
-        'Content-Type': 'application/json',
-      },
+      headers: {'Authorization': 'Bearer $apiKey', 'Content-Type': 'application/json'},
       body: requestBody,
     );
 
@@ -61,4 +53,3 @@ class GroqAiService implements AiAutofillService {
     return raw.substring(start, end + 1);
   }
 }
-

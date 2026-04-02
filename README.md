@@ -7,7 +7,7 @@ MotoTracker is a dark-first, premium motorcycle management app built with Flutte
 - Dark-only custom design system in `lib/core/theme/AppTheme.dart` with required tokens.
 - Auth flow (email/password) with session persistence via Supabase.
 - Garage list, add motorcycle with AI autofill, motorcycle detail, and profile/sign out.
-- AI parsing service in `lib/features/ai/data/gemini_ai_service.dart`.
+- AI parsing service in `lib/features/ai/data/groq_ai_service.dart`.
 - Feature-based localization in English and Spanish using `slang` (`lib/i18n/*_en.i18n.json`, `lib/i18n/*_es.i18n.json`).
 - Feature-modular structure aligned with Clean Architecture boundaries.
 
@@ -53,7 +53,6 @@ Pass these as Dart defines at runtime/build time:
 
 - `SUPABASE_URL`
 - `SUPABASE_ANON_KEY`
-- `GEMINI_API_KEY`
 
 Quick setup for this repo:
 

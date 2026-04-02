@@ -112,9 +112,7 @@ class _GarageEmptyState extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: ThemeTokens.primary.withValues(alpha: 0.14),
-                  border: Border.all(
-                    color: ThemeTokens.primary.withValues(alpha: 0.45),
-                  ),
+                  border: Border.all(color: ThemeTokens.primary.withValues(alpha: 0.45)),
                 ),
                 child: const Icon(Icons.two_wheeler_rounded, color: ThemeTokens.primary, size: 36),
               ),
@@ -122,7 +120,9 @@ class _GarageEmptyState extends StatelessWidget {
               Text(
                 title,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700),
+                style: Theme.of(
+                  context,
+                ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 18),
               SizedBox(
@@ -252,9 +252,7 @@ class _MotorcycleCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 12),
-                Center(
-                  child: _MotorcyclePhoto(imageUrl: bike.imageUrl),
-                ),
+                Center(child: _MotorcyclePhoto(imageUrl: bike.imageUrl)),
                 const SizedBox(height: 10),
                 Center(
                   child: Text(
@@ -364,4 +362,3 @@ class _MotorcyclePhoto extends StatelessWidget {
     );
   }
 }
-

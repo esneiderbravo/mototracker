@@ -78,9 +78,7 @@ class MotorcycleDetailScreen extends ConsumerWidget {
                             ],
                           ),
                           const SizedBox(height: 28),
-                          Center(
-                            child: _MotorcycleHeroPhoto(imageUrl: bike.imageUrl),
-                          ),
+                          Center(child: _MotorcycleHeroPhoto(imageUrl: bike.imageUrl)),
                           const SizedBox(height: 14),
                           Center(
                             child: Text(
@@ -371,4 +369,3 @@ class _MotorcycleHeroPhoto extends StatelessWidget {
     );
   }
 }
-

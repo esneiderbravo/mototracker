@@ -52,6 +52,7 @@ class _TranslationsAiEs implements TranslationsAiEn {
 
 	// Translations
 	@override String get autofill => 'Autorrelleno IA';
+	@override String get searchWithAi => 'Buscar con IA';
 	@override String get hintExample => 'Yamaha R3 2022';
 	@override String get error => 'Error de IA';
 }
@@ -170,6 +171,7 @@ extension on TranslationsEs {
 	dynamic _flatMapFunction(String path) {
 		return switch (path) {
 			'ai.autofill' => 'Autorrelleno IA',
+			'ai.searchWithAi' => 'Buscar con IA',
 			'ai.hintExample' => 'Yamaha R3 2022',
 			'ai.error' => 'Error de IA',
 			'auth.error' => 'Error de autenticacion',

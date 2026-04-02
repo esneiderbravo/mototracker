@@ -32,10 +32,7 @@ class _MotoTrackerSplashArtState extends State<MotoTrackerSplashArt>
   void initState() {
     super.initState();
 
-    _ctrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1800),
-    );
+    _ctrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 1800));
 
     _arcAnim = CurvedAnimation(
       parent: _ctrl,
@@ -94,23 +91,23 @@ class _MotoTrackerSplashArtState extends State<MotoTrackerSplashArt>
 
         // ── app name ─────────────────────────────────────────────────────
         RichText(
-          text: TextSpan(
-            style: textTheme.headlineMedium?.copyWith(
-              fontWeight: FontWeight.w800,
-              letterSpacing: 1.2,
-            ),
-            children: const [
-              TextSpan(
-                text: 'MOTO',
-                style: TextStyle(color: ThemeTokens.textPrimary),
+              text: TextSpan(
+                style: textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 1.2,
+                ),
+                children: const [
+                  TextSpan(
+                    text: 'MOTO',
+                    style: TextStyle(color: ThemeTokens.textPrimary),
+                  ),
+                  TextSpan(
+                    text: 'TRACKER',
+                    style: TextStyle(color: ThemeTokens.primary),
+                  ),
+                ],
               ),
-              TextSpan(
-                text: 'TRACKER',
-                style: TextStyle(color: ThemeTokens.primary),
-              ),
-            ],
-          ),
-        )
+            )
             .animate(delay: 1100.ms)
             .fadeIn(duration: 400.ms)
             .slideY(begin: 0.3, end: 0, duration: 400.ms, curve: Curves.easeOut),
@@ -119,13 +116,13 @@ class _MotoTrackerSplashArtState extends State<MotoTrackerSplashArt>
 
         // ── tagline ───────────────────────────────────────────────────────
         Text(
-          'RIDE. TRACK. CONNECT.',
-          style: textTheme.bodyMedium?.copyWith(
-            color: ThemeTokens.textSecondary,
-            letterSpacing: 4,
-            fontWeight: FontWeight.w600,
-          ),
-        )
+              'RIDE. TRACK. CONNECT.',
+              style: textTheme.bodyMedium?.copyWith(
+                color: ThemeTokens.textSecondary,
+                letterSpacing: 4,
+                fontWeight: FontWeight.w600,
+              ),
+            )
             .animate(delay: 1300.ms)
             .fadeIn(duration: 400.ms)
             .slideY(begin: 0.3, end: 0, duration: 400.ms, curve: Curves.easeOut),
@@ -144,17 +141,17 @@ class _SpeedometerPainter extends CustomPainter {
     required this.dotScale,
   });
 
-  final double arcProgress;    // 0 → 1  (outer arc sweep)
+  final double arcProgress; // 0 → 1  (outer arc sweep)
   final double needleProgress; // 0 → 1  (idle → running, may overshoot)
-  final double dashOpacity;    // 0 → 1  (tick-mark alpha)
-  final double dotScale;       // 0 → 1+ (centre dot scale, may overshoot)
+  final double dashOpacity; // 0 → 1  (tick-mark alpha)
+  final double dotScale; // 0 → 1+ (centre dot scale, may overshoot)
 
   // Arc geometry – matches the static original
   static const _arcStart = math.pi * 0.06;
   static const _arcSweep = math.pi * 1.76;
 
   // Needle positions
-  static const _needleIdle    =  math.pi * 0.85; // ~6 o'clock-ish → idle RPM
+  static const _needleIdle = math.pi * 0.85; // ~6 o'clock-ish → idle RPM
   static const _needleRunning = -math.pi * 0.38; // upper-left      → cruising RPM
 
   @override
@@ -204,8 +201,7 @@ class _SpeedometerPainter extends CustomPainter {
 
     // 3 ── needle (revs from idle → running, easeOutBack overshoot) ───────
     if (needleProgress > 0) {
-      final currentAngle =
-          _needleIdle + (_needleRunning - _needleIdle) * needleProgress;
+      final currentAngle = _needleIdle + (_needleRunning - _needleIdle) * needleProgress;
       final needleLength = radius * 0.5;
       final needleEnd = Offset(
         center.dx + math.cos(currentAngle) * needleLength,
@@ -216,8 +212,7 @@ class _SpeedometerPainter extends CustomPainter {
         center,
         needleEnd,
         Paint()
-          ..color = ThemeTokens.textPrimary
-              .withValues(alpha: needleProgress.clamp(0.0, 1.0))
+          ..color = ThemeTokens.textPrimary.withValues(alpha: needleProgress.clamp(0.0, 1.0))
           ..style = PaintingStyle.stroke
           ..strokeCap = StrokeCap.round
           ..strokeWidth = 10,
@@ -236,8 +231,8 @@ class _SpeedometerPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_SpeedometerPainter old) =>
-      old.arcProgress    != arcProgress    ||
+      old.arcProgress != arcProgress ||
       old.needleProgress != needleProgress ||
-      old.dashOpacity    != dashOpacity    ||
-      old.dotScale       != dotScale;
+      old.dashOpacity != dashOpacity ||
+      old.dotScale != dotScale;
 }

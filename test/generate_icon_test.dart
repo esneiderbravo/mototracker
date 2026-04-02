@@ -33,15 +33,9 @@ void main() {
 // Render helper
 // ---------------------------------------------------------------------------
 
-Future<List<int>> _renderToPng(
-  int size,
-  void Function(ui.Canvas canvas, double size) draw,
-) async {
+Future<List<int>> _renderToPng(int size, void Function(ui.Canvas canvas, double size) draw) async {
   final recorder = ui.PictureRecorder();
-  final canvas = ui.Canvas(
-    recorder,
-    ui.Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()),
-  );
+  final canvas = ui.Canvas(recorder, ui.Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()));
   draw(canvas, size.toDouble());
   final picture = recorder.endRecording();
   final image = await picture.toImage(size, size);
@@ -60,39 +54,24 @@ void _drawFullIcon(ui.Canvas canvas, double size) {
     ..color = const ui.Color(0xFF121212)
     ..style = ui.PaintingStyle.fill;
   canvas.drawRRect(
-    ui.RRect.fromRectAndRadius(
-      ui.Rect.fromLTWH(0, 0, size, size),
-      ui.Radius.circular(size * 0.22),
-    ),
+    ui.RRect.fromRectAndRadius(ui.Rect.fromLTWH(0, 0, size, size), ui.Radius.circular(size * 0.22)),
     bgPaint,
   );
 
-  _drawSpeedometer(
-    canvas,
-    center: ui.Offset(size * 0.5, size * 0.52),
-    radius: size * 0.355,
-  );
+  _drawSpeedometer(canvas, center: ui.Offset(size * 0.5, size * 0.52), radius: size * 0.355);
 }
 
 /// Foreground icon: transparent background + speedometer (Android adaptive).
 /// Kept slightly smaller so the graphic stays inside Android's safe zone.
 void _drawForeground(ui.Canvas canvas, double size) {
-  _drawSpeedometer(
-    canvas,
-    center: ui.Offset(size * 0.5, size * 0.52),
-    radius: size * 0.30,
-  );
+  _drawSpeedometer(canvas, center: ui.Offset(size * 0.5, size * 0.52), radius: size * 0.30);
 }
 
 // ---------------------------------------------------------------------------
 // Speedometer drawing
 // ---------------------------------------------------------------------------
 
-void _drawSpeedometer(
-  ui.Canvas canvas, {
-  required ui.Offset center,
-  required double radius,
-}) {
+void _drawSpeedometer(ui.Canvas canvas, {required ui.Offset center, required double radius}) {
   // ── outer orange arc ────────────────────────────────────────────────────
   final arcPaint = ui.Paint()
     ..color = const ui.Color(0xFFFF5722)
@@ -147,10 +126,5 @@ void _drawSpeedometer(
   canvas.drawLine(center, needleEnd, needlePaint);
 
   // ── centre dot ───────────────────────────────────────────────────────────
-  canvas.drawCircle(
-    center,
-    radius * 0.14,
-    ui.Paint()..color = const ui.Color(0xFFFF5722),
-  );
+  canvas.drawCircle(center, radius * 0.14, ui.Paint()..color = const ui.Color(0xFFFF5722));
 }
-
