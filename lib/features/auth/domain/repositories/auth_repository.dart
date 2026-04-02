@@ -1,4 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'dart:typed_data';
 
 abstract class AuthRepository {
   Stream<AuthState> authStateChanges();
@@ -11,5 +12,12 @@ abstract class AuthRepository {
     required String fullName,
     required String phone,
     required String phoneCountryIso2,
+    String? avatarUrl,
+  });
+
+  Future<String> uploadAvatar({
+    required String userId,
+    required String fileName,
+    required Uint8List bytes,
   });
 }

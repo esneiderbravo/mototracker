@@ -199,8 +199,8 @@ class _MotorcycleCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 12),
-                const Center(
-                  child: Icon(Icons.two_wheeler, color: ThemeTokens.primaryDark, size: 56),
+                Center(
+                  child: _MotorcyclePhoto(imageUrl: bike.imageUrl),
                 ),
                 const SizedBox(height: 10),
                 Center(
@@ -280,3 +280,35 @@ class _PillLabel extends StatelessWidget {
     );
   }
 }
+
+class _MotorcyclePhoto extends StatelessWidget {
+  const _MotorcyclePhoto({required this.imageUrl});
+
+  final String? imageUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    final url = imageUrl?.trim();
+    if (url == null || url.isEmpty) {
+      return const Icon(Icons.two_wheeler, color: ThemeTokens.primaryDark, size: 56);
+    }
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(14),
+      child: Image.network(
+        url,
+        width: 130,
+        height: 84,
+        fit: BoxFit.cover,
+        errorBuilder: (_, _, _) {
+          return const SizedBox(
+            width: 130,
+            height: 84,
+            child: Icon(Icons.two_wheeler, color: ThemeTokens.primaryDark, size: 56),
+          );
+        },
+      ),
+    );
+  }
+}
+

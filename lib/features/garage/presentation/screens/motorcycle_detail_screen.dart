@@ -78,12 +78,8 @@ class MotorcycleDetailScreen extends ConsumerWidget {
                             ],
                           ),
                           const SizedBox(height: 28),
-                          const Center(
-                            child: Icon(
-                              Icons.two_wheeler,
-                              color: ThemeTokens.primaryDark,
-                              size: 74,
-                            ),
+                          Center(
+                            child: _MotorcycleHeroPhoto(imageUrl: bike.imageUrl),
                           ),
                           const SizedBox(height: 14),
                           Center(
@@ -344,3 +340,35 @@ class _TagPill extends StatelessWidget {
     );
   }
 }
+
+class _MotorcycleHeroPhoto extends StatelessWidget {
+  const _MotorcycleHeroPhoto({required this.imageUrl});
+
+  final String? imageUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    final url = imageUrl?.trim();
+    if (url == null || url.isEmpty) {
+      return const Icon(Icons.two_wheeler, color: ThemeTokens.primaryDark, size: 74);
+    }
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(18),
+      child: Image.network(
+        url,
+        width: 210,
+        height: 132,
+        fit: BoxFit.cover,
+        errorBuilder: (_, _, _) {
+          return const SizedBox(
+            width: 210,
+            height: 132,
+            child: Icon(Icons.two_wheeler, color: ThemeTokens.primaryDark, size: 74),
+          );
+        },
+      ),
+    );
+  }
+}
+

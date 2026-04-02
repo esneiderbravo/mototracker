@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/theme/theme_tokens.dart';
 import '../../../../core/utils/locale_controller.dart';
@@ -22,28 +21,26 @@ class ProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
-  String? _avatarPath;
+  String? _avatarUrl;
+  XFile? _selectedAvatar;
   String? _loadedUserId;
   final _fullNameController = TextEditingController();
   final _phoneController = TextEditingController();
   String _selectedPhoneCountryIso2 = 'CO';
   String _phoneDigits = '';
-  bool _isLoadingAvatar = false;
+  bool _isLoadingProfile = false;
   bool _isSaving = false;
-
-  String _avatarPrefKey(String userId) => 'profile_avatar_path_$userId';
 
   Future<void> _loadProfileData(
     String userId,
     Map<String, dynamic>? metadata,
     String fallbackDisplayName,
   ) async {
-    if (_isLoadingAvatar) return;
-    _isLoadingAvatar = true;
-    final prefs = await SharedPreferences.getInstance();
-    final savedPath = prefs.getString(_avatarPrefKey(userId));
+    if (_isLoadingProfile) return;
+    _isLoadingProfile = true;
     final fullName = (metadata?['full_name'] as String?)?.trim();
     final phone = (metadata?['phone'] as String?)?.trim() ?? '';
+    final avatarUrl = (metadata?['avatar_url'] as String?)?.trim();
     final countryIso =
         ((metadata?['phone_country_iso2'] as String?)?.trim().toUpperCase().isNotEmpty ?? false)
         ? (metadata?['phone_country_iso2'] as String).toUpperCase()
@@ -51,7 +48,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     if (!mounted) return;
     setState(() {
       _loadedUserId = userId;
-      _avatarPath = savedPath;
+      _avatarUrl = (avatarUrl?.isEmpty ?? true) ? null : avatarUrl;
+      _selectedAvatar = null;
       _fullNameController.text = (fullName?.isNotEmpty ?? false)
           ? fullName!
           : fallbackDisplayName;
@@ -59,7 +57,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       _phoneDigits = _digitsOnly(phone);
       _phoneController.text = _toLocalDigits(_phoneDigits, countryIso);
     });
-    _isLoadingAvatar = false;
+    _isLoadingProfile = false;
   }
 
   @override
@@ -77,26 +75,36 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
     if (image == null) return;
     if (!mounted) return;
-    setState(() => _avatarPath = image.path);
+    setState(() => _selectedAvatar = image);
   }
 
   Future<void> _saveProfile(String userId) async {
     setState(() => _isSaving = true);
     try {
+      var avatarUrl = _avatarUrl;
+      if (_selectedAvatar != null) {
+        final bytes = await _selectedAvatar!.readAsBytes();
+        avatarUrl = await ref.read(authRepositoryProvider).uploadAvatar(
+          userId: userId,
+          fileName: _selectedAvatar!.name,
+          bytes: bytes,
+        );
+      }
+
       await ref.read(authRepositoryProvider).updateProfile(
             fullName: _fullNameController.text.trim(),
             phone: _phoneDigits.isNotEmpty
                 ? _phoneDigits
                 : _digitsOnly(_phoneController.text.trim()),
             phoneCountryIso2: _selectedPhoneCountryIso2,
+            avatarUrl: avatarUrl,
           );
 
-      final prefs = await SharedPreferences.getInstance();
-      final path = _avatarPath;
-      if (path != null && path.isNotEmpty) {
-        await prefs.setString(_avatarPrefKey(userId), path);
-      } else {
-        await prefs.remove(_avatarPrefKey(userId));
+      if (mounted) {
+        setState(() {
+          _avatarUrl = avatarUrl;
+          _selectedAvatar = null;
+        });
       }
       if (!mounted) return;
       final t = Translations.of(context);
@@ -132,9 +140,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final safeDisplayName = _fullNameController.text.trim().isEmpty
         ? fallbackDisplayName
         : _fullNameController.text.trim();
-    final avatarFile = (_avatarPath != null && File(_avatarPath!).existsSync())
-        ? File(_avatarPath!)
-        : null;
+    final avatarFile = _selectedAvatar != null ? File(_selectedAvatar!.path) : null;
 
     return Scaffold(
       bottomNavigationBar: MotoBottomNav(
@@ -184,6 +190,19 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       clipBehavior: Clip.antiAlias,
                       child: avatarFile != null
                           ? Image.file(avatarFile, width: 150, height: 150, fit: BoxFit.cover)
+                          : (_avatarUrl != null && _avatarUrl!.isNotEmpty)
+                          ? Image.network(
+                              _avatarUrl!,
+                              width: 150,
+                              height: 150,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, _, _) {
+                                return Text(
+                                  safeDisplayName[0].toUpperCase(),
+                                  style: const TextStyle(fontSize: 54, fontWeight: FontWeight.w700),
+                                );
+                              },
+                            )
                           : Text(
                               safeDisplayName[0].toUpperCase(),
                               style: const TextStyle(fontSize: 54, fontWeight: FontWeight.w700),
@@ -377,11 +396,27 @@ class _ReadOnlyField extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
       decoration: BoxDecoration(
-        color: ThemeTokens.surface,
+        // Slight red-tinted background to indicate blocked/locked state.
+        color: const Color(0x22FF1744),
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: ThemeTokens.border),
+        border: Border.all(color: const Color(0x66FF1744)),
       ),
-      child: Text(value, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              value,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+                color: ThemeTokens.textSecondary,
+              ),
+            ),
+          ),
+          const SizedBox(width: 10),
+          const Icon(Icons.lock_outline_rounded, color: Color(0xFFFF7A85), size: 20),
+        ],
+      ),
     );
   }
 }
@@ -409,4 +444,5 @@ String _toLocalDigits(String rawDigits, String iso2) {
 
   return digits;
 }
+
 

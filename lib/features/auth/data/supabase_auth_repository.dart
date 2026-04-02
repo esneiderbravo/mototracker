@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../domain/repositories/auth_repository.dart';
@@ -47,17 +49,37 @@ class SupabaseAuthRepository implements AuthRepository {
     required String fullName,
     required String phone,
     required String phoneCountryIso2,
+    String? avatarUrl,
   }) async {
     final client = _requiredClient;
+    final data = <String, dynamic>{
+      'full_name': fullName,
+      'phone': phone,
+      'phone_country_iso2': phoneCountryIso2,
+    };
+    if (avatarUrl != null) {
+      data['avatar_url'] = avatarUrl;
+    }
+
     await client.auth.updateUser(
       UserAttributes(
-        data: {
-          'full_name': fullName,
-          'phone': phone,
-          'phone_country_iso2': phoneCountryIso2,
-        },
+        data: data,
       ),
     );
+  }
+
+  @override
+  Future<String> uploadAvatar({
+    required String userId,
+    required String fileName,
+    required Uint8List bytes,
+  }) async {
+    final client = _requiredClient;
+    final path = '$userId/${DateTime.now().millisecondsSinceEpoch}_$fileName';
+    await client.storage
+        .from('profiles')
+        .uploadBinary(path, bytes, fileOptions: const FileOptions(upsert: true));
+    return client.storage.from('profiles').getPublicUrl(path);
   }
 
   SupabaseClient get _requiredClient {
