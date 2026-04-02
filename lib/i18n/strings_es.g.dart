@@ -33,7 +33,7 @@ class TranslationsEs with BaseTranslations<AppLocale, Translations> implements T
 
 	late final TranslationsEs _root = this; // ignore: unused_field
 
-	@override
+	@override 
 	TranslationsEs $copyWith({TranslationMetadata<AppLocale, Translations>? meta}) => TranslationsEs(meta: meta ?? this.$meta);
 
 	// Translations
@@ -82,7 +82,7 @@ class _TranslationsAuthEs implements TranslationsAuthEn {
 	@override String get newPassword => 'Nueva contraseña';
 	@override String get confirmPassword => 'Confirmar contraseña';
 	@override String get passwordsDoNotMatch => 'Las contraseñas no coinciden';
-	@override String get passwordChanged => 'Contraseña actualizada correctamente.';
+	@override String get passwordChanged => 'contraseña actualizada correctamente.';
 	@override String get passwordChangeError => 'No se pudo actualizar la contraseña. Por favor intenta de nuevo.';
 	@override String get changePasswordTitle => 'Cambiar contraseña';
 }
@@ -100,7 +100,7 @@ class _TranslationsGarageEs implements TranslationsGarageEn {
 	@override String get addMotorcycle => 'Agregar moto';
 	@override String get make => 'Marca';
 	@override String get model => 'Modelo';
-	@override String get year => 'Ano';
+	@override String get year => 'Año';
 	@override String get color => 'Color';
 	@override String get licensePlate => 'Placa';
 	@override String get currentKm => 'Kilometraje';
@@ -191,7 +191,7 @@ extension on TranslationsEs {
 			'auth.newPassword' => 'Nueva contraseña',
 			'auth.confirmPassword' => 'Confirmar contraseña',
 			'auth.passwordsDoNotMatch' => 'Las contraseñas no coinciden',
-			'auth.passwordChanged' => 'Contraseña actualizada correctamente.',
+			'auth.passwordChanged' => 'contraseña actualizada correctamente.',
 			'auth.passwordChangeError' => 'No se pudo actualizar la contraseña. Por favor intenta de nuevo.',
 			'auth.changePasswordTitle' => 'Cambiar contraseña',
 			'garage.title' => 'Mi Garaje',
@@ -200,7 +200,7 @@ extension on TranslationsEs {
 			'garage.addMotorcycle' => 'Agregar moto',
 			'garage.make' => 'Marca',
 			'garage.model' => 'Modelo',
-			'garage.year' => 'Ano',
+			'garage.year' => 'Año',
 			'garage.color' => 'Color',
 			'garage.licensePlate' => 'Placa',
 			'garage.currentKm' => 'Kilometraje',

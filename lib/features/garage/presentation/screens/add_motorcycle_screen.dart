@@ -47,12 +47,11 @@ class _AddMotorcycleScreenState extends ConsumerState<AddMotorcycleScreen> {
   }
 
   Future<void> _autofill() async {
-    final t = Translations.of(context);
     if (_aiQuery.text.trim().isEmpty) return;
     setState(() => _isAiLoading = true);
 
     try {
-      final service = ref.read(geminiAiServiceProvider);
+      final service = ref.read(aiAutofillServiceProvider);
       final response = await service.autofillFromPrompt(_aiQuery.text.trim());
       if (response == null) return;
 
@@ -121,9 +120,7 @@ class _AddMotorcycleScreenState extends ConsumerState<AddMotorcycleScreen> {
       AppAlerts.success(context, message: t.garage.saveSuccess);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('${t.garage.saveError}: $e')));
+      AppAlerts.error(context, message: t.garage.saveError, detail: e);
     } finally {
       if (mounted) setState(() => _isSaving = false);
     }

@@ -107,6 +107,20 @@ dart run slang
 flutter run --dart-define-from-file=config/env.json
 ```
 
+## i18n Watch Mode
+
+Use this during development to regenerate `lib/i18n/strings.g.dart` automatically when any `lib/i18n/*.i18n.json` file changes.
+
+```zsh
+./tool/slang_watch.sh
+```
+
+Typical workflow: run watcher in one terminal and app in another.
+
+```zsh
+flutter run --dart-define-from-file=config/env.json
+```
+
 ## Code Formatter
 
 This project uses the built-in Dart formatter (`dart format`) with shared config:

@@ -39,29 +39,10 @@ class HomeScreen extends ConsumerWidget {
                   title: t.garage.title,
                   subtitle: countText,
                   onAdd: () => context.push('/garage/add'),
-                  child: Center(
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(
-                              Icons.two_wheeler,
-                              color: ThemeTokens.textSecondary,
-                              size: 34,
-                            ),
-                            const SizedBox(height: 12),
-                            Text(t.garage.empty, style: Theme.of(context).textTheme.titleMedium),
-                            const SizedBox(height: 10),
-                            OutlinedButton(
-                              onPressed: () => context.push('/garage/add'),
-                              child: Text(t.garage.addMotorcycle),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                  child: _GarageEmptyState(
+                    title: t.garage.empty,
+                    ctaLabel: t.garage.addMotorcycle,
+                    onAdd: () => context.push('/garage/add'),
                   ),
                 ).animate().fadeIn(duration: 300.ms);
               }
@@ -84,6 +65,78 @@ class HomeScreen extends ConsumerWidget {
                 ),
               );
             },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _GarageEmptyState extends StatelessWidget {
+  const _GarageEmptyState({required this.title, required this.ctaLabel, required this.onAdd});
+
+  final String title;
+  final String ctaLabel;
+  final VoidCallback onAdd;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 420),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.fromLTRB(24, 30, 24, 24),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(26),
+            border: Border.all(color: ThemeTokens.border),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Colors.white.withValues(alpha: 0.07), Colors.white.withValues(alpha: 0.02)],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: ThemeTokens.primary.withValues(alpha: 0.14),
+                blurRadius: 30,
+                spreadRadius: 1,
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 72,
+                height: 72,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: ThemeTokens.primary.withValues(alpha: 0.14),
+                  border: Border.all(
+                    color: ThemeTokens.primary.withValues(alpha: 0.45),
+                  ),
+                ),
+                child: const Icon(Icons.two_wheeler_rounded, color: ThemeTokens.primary, size: 36),
+              ),
+              const SizedBox(height: 18),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700),
+              ),
+              const SizedBox(height: 18),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: onAdd,
+                  icon: const Icon(Icons.add_rounded),
+                  label: Text(ctaLabel),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

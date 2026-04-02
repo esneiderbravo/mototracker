@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../../core/theme/theme_tokens.dart';
@@ -61,14 +63,20 @@ class AppAlerts {
     required Color textColor,
   }) {
     if (!context.mounted) return;
-    ScaffoldMessenger.of(context)
+    final mediaQuery = MediaQuery.of(context);
+    final topOffset = mediaQuery.viewPadding.top + 72;
+    final bottomOffset = math.max(16.0, mediaQuery.size.height - topOffset - 90);
+
+    final messenger = ScaffoldMessenger.of(context);
+    messenger
+      ..hideCurrentMaterialBanner()
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
           backgroundColor: backgroundColor,
           behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.fromLTRB(16, 0, 16, bottomOffset),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-          margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
           duration: const Duration(seconds: 3),
           content: Row(
             children: [

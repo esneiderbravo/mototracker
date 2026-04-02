@@ -5,12 +5,14 @@ import 'package:http/http.dart' as http;
 import '../../../core/constants/env.dart';
 import '../domain/prompts/ai_prompts.dart';
 import '../domain/models/ai_motorcycle_data.dart';
+import '../domain/services/ai_autofill_service.dart';
 
-class GeminiAiService {
+class GeminiAiService implements AiAutofillService {
   GeminiAiService({http.Client? client}) : _client = client ?? http.Client();
 
   final http.Client _client;
 
+  @override
   Future<AiMotorcycleData?> autofillFromPrompt(String input) async {
     const apiKey = Env.geminiApiKey;
     if (apiKey.isEmpty) {
