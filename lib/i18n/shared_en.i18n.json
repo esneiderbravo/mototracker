@@ -1,0 +1,10 @@
+{
+  "navGarage": "Garage",
+  "navProfile": "Profile",
+  "requiredField": "Required field",
+  "invalidNumber": "Enter a valid number",
+  "errorLabel": "Error",
+  "save": "Save",
+  "unknownError": "An unexpected error occurred. Please try again."
+}
+

@@ -1,0 +1,15 @@
+{
+  "title": "Profile",
+  "pilotProfile": "Pilot profile",
+  "riderSince": "Rider since",
+  "fullName": "Full name",
+  "mobilePhone": "Mobile phone",
+  "emailAddress": "Email address",
+  "emailReadOnlyHint": "Your access email is locked for security.",
+  "saveChanges": "Save changes",
+  "noEmail": "No email",
+  "subtitle": "Keep your bikes, docs and maintenance in sync with Supabase cloud.",
+  "saveSuccess": "Profile updated successfully.",
+  "saveError": "Could not update profile. Please try again."
+}
+

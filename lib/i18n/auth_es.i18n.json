@@ -1,0 +1,25 @@
+{
+  "error": "Error de autenticacion",
+  "signInError": "No se pudo iniciar sesion. Verifica tu correo y contraseña.",
+  "signUpError": "No se pudo crear la cuenta. Prueba con otro correo.",
+  "welcome": "Bienvenido",
+  "subtitle": "Gestiona y da mantenimiento a tus motos en un espacio premium.",
+  "email": "Correo",
+  "invalidEmail": "Ingresa un correo valido",
+  "password": "Contraseña",
+  "invalidPassword": "La contraseña debe tener al menos 6 caracteres",
+  "signUp": "Crear cuenta",
+  "signIn": "Iniciar sesion",
+  "haveAccount": "Ya tienes cuenta? Inicia sesion",
+  "noAccount": "No tienes cuenta? Crea una",
+  "signInAgain": "Inicia sesion de nuevo.",
+  "signOut": "Cerrar sesion",
+  "changePassword": "Cambiar contraseña",
+  "newPassword": "Nueva contraseña",
+  "confirmPassword": "Confirmar contraseña",
+  "passwordsDoNotMatch": "Las contraseñas no coinciden",
+  "passwordChanged": "contraseña actualizada correctamente.",
+  "passwordChangeError": "No se pudo actualizar la contraseña. Por favor intenta de nuevo.",
+  "changePasswordTitle": "Cambiar contraseña"
+}
+

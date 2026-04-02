@@ -1,0 +1,25 @@
+{
+  "error": "Authentication failed",
+  "signInError": "Could not sign in. Check your email and password.",
+  "signUpError": "Could not create account. Try a different email.",
+  "welcome": "Welcome back",
+  "subtitle": "Track, maintain and manage your motorcycles in one premium workspace.",
+  "email": "Email",
+  "invalidEmail": "Enter a valid email",
+  "password": "Password",
+  "invalidPassword": "Password must be at least 6 characters",
+  "signUp": "Create account",
+  "signIn": "Sign in",
+  "haveAccount": "Already have an account? Sign in",
+  "noAccount": "No account? Create one",
+  "signInAgain": "Please sign in again.",
+  "signOut": "Sign out",
+  "changePassword": "Change password",
+  "newPassword": "New password",
+  "confirmPassword": "Confirm password",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "passwordChanged": "Password updated successfully.",
+  "passwordChangeError": "Could not update password. Please try again.",
+  "changePasswordTitle": "Change password"
+}
+

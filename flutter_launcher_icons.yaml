@@ -1,0 +1,33 @@
+flutter_launcher_icons:
+  # ── shared ─────────────────────────────────────────────────────────────────
+  image_path: "assets/icons/icon.png"
+
+  # ── Android ────────────────────────────────────────────────────────────────
+  android: true
+  min_sdk_android: 21
+  # Adaptive icon: solid dark background + speedometer foreground
+  adaptive_icon_background: "#121212"
+  adaptive_icon_foreground: "assets/icons/icon_foreground.png"
+
+  # ── iOS ────────────────────────────────────────────────────────────────────
+  ios: true
+  remove_alpha_ios: true
+
+  # ── Web ────────────────────────────────────────────────────────────────────
+  web:
+    generate: true
+    image_path: "assets/icons/icon.png"
+    background_color: "#121212"
+    theme_color: "#FF5722"
+
+  # ── macOS ──────────────────────────────────────────────────────────────────
+  macos:
+    generate: true
+    image_path: "assets/icons/icon.png"
+
+  # ── Windows ────────────────────────────────────────────────────────────────
+  windows:
+    generate: true
+    image_path: "assets/icons/icon.png"
+    icon_size: 48
+

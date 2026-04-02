@@ -1,0 +1,15 @@
+{
+  "title": "Perfil",
+  "pilotProfile": "Perfil del piloto",
+  "riderSince": "Piloto desde",
+  "fullName": "Nombre completo",
+  "mobilePhone": "Telefono movil",
+  "emailAddress": "Correo electronico",
+  "emailReadOnlyHint": "El correo de acceso no es modificable por seguridad.",
+  "saveChanges": "Guardar cambios",
+  "noEmail": "Sin correo",
+  "subtitle": "Manten tus motos, documentos y mantenimientos en la nube de Supabase.",
+  "saveSuccess": "Perfil actualizado correctamente.",
+  "saveError": "No se pudo actualizar el perfil. Por favor intenta de nuevo."
+}
+
