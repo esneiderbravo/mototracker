@@ -2,6 +2,10 @@
   "autofill": "AI Autofill",
   "searchWithAi": "Search with AI",
   "hintExample": "Yamaha R3 2022",
-  "error": "AI error"
+  "error": "AI error",
+  "loadingInsights": "Generating AI insights...",
+  "insightsError": "Could not generate insights right now.",
+  "insightsEmpty": "No insights available for this motorcycle yet.",
+  "retry": "Retry"
 }
 

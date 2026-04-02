@@ -66,6 +66,18 @@ class TranslationsAiEn {
 
 	/// en: 'AI error'
 	String get error => 'AI error';
+
+	/// en: 'Generating AI insights...'
+	String get loadingInsights => 'Generating AI insights...';
+
+	/// en: 'Could not generate insights right now.'
+	String get insightsError => 'Could not generate insights right now.';
+
+	/// en: 'No insights available for this motorcycle yet.'
+	String get insightsEmpty => 'No insights available for this motorcycle yet.';
+
+	/// en: 'Retry'
+	String get retry => 'Retry';
 }
 
 // Path: auth
@@ -226,6 +238,9 @@ class TranslationsGarageEn {
 	/// en: 'Delete'
 	String get delete => 'Delete';
 
+	/// en: 'Are you sure you want to permanently delete ${name}? This action cannot be undone.'
+	String deleteConfirmation({required Object name}) => 'Are you sure you want to permanently delete ${name}? This action cannot be undone.';
+
 	/// en: 'No image'
 	String get noImage => 'No image';
 
@@ -307,6 +322,9 @@ class TranslationsSharedEn {
 	/// en: 'Save'
 	String get save => 'Save';
 
+	/// en: 'Cancel'
+	String get cancel => 'Cancel';
+
 	/// en: 'An unexpected error occurred. Please try again.'
 	String get unknownError => 'An unexpected error occurred. Please try again.';
 }
@@ -323,6 +341,10 @@ extension on Translations {
 			'ai.searchWithAi' => 'Search with AI',
 			'ai.hintExample' => 'Yamaha R3 2022',
 			'ai.error' => 'AI error',
+			'ai.loadingInsights' => 'Generating AI insights...',
+			'ai.insightsError' => 'Could not generate insights right now.',
+			'ai.insightsEmpty' => 'No insights available for this motorcycle yet.',
+			'ai.retry' => 'Retry',
 			'auth.error' => 'Authentication failed',
 			'auth.signInError' => 'Could not sign in. Check your email and password.',
 			'auth.signUpError' => 'Could not create account. Try a different email.',
@@ -370,6 +392,7 @@ extension on Translations {
 			'garage.notFound' => 'Motorcycle not found',
 			'garage.createdAt' => 'Created',
 			'garage.delete' => 'Delete',
+			'garage.deleteConfirmation' => ({required Object name}) => 'Are you sure you want to permanently delete ${name}? This action cannot be undone.',
 			'garage.noImage' => 'No image',
 			'garage.addPhoto' => 'Photo',
 			'garage.aiAutofillError' => 'AI autofill failed. Please fill the form manually.',
@@ -391,6 +414,7 @@ extension on Translations {
 			'shared.invalidNumber' => 'Enter a valid number',
 			'shared.errorLabel' => 'Error',
 			'shared.save' => 'Save',
+			'shared.cancel' => 'Cancel',
 			'shared.unknownError' => 'An unexpected error occurred. Please try again.',
 			_ => null,
 		};

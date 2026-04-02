@@ -24,6 +24,7 @@
   "notFound": "Moto no encontrada",
   "createdAt": "Creado",
   "delete": "Eliminar",
+  "deleteConfirmation": "¿Estás seguro de que quieres eliminar permanentemente ${name}? Esta acción no se puede deshacer.",
   "noImage": "Sin imagen",
   "addPhoto": "Foto",
   "aiAutofillError": "El autorrelleno de IA fallo. Por favor completa el formulario manualmente."

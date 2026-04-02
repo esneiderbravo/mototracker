@@ -2,6 +2,10 @@
   "autofill": "Autorrelleno IA",
   "searchWithAi": "Buscar con IA",
   "hintExample": "Yamaha R3 2022",
-  "error": "Error de IA"
+  "error": "Error de IA",
+  "loadingInsights": "Generando insights con IA...",
+  "insightsError": "No se pudieron generar insights por ahora.",
+  "insightsEmpty": "No hay insights disponibles para esta moto todavia.",
+  "retry": "Reintentar"
 }
 

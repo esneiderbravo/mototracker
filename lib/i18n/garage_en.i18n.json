@@ -24,6 +24,7 @@
   "notFound": "Motorcycle not found",
   "createdAt": "Created",
   "delete": "Delete",
+  "deleteConfirmation": "Are you sure you want to permanently delete ${name}? This action cannot be undone.",
   "noImage": "No image",
   "addPhoto": "Photo",
   "aiAutofillError": "AI autofill failed. Please fill the form manually."

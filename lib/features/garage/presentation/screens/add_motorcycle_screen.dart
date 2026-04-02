@@ -1,12 +1,14 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/constants/env.dart';
 import '../../../../core/theme/theme_tokens.dart';
+import '../../../../core/utils/text_formatters.dart';
 import '../../../../i18n/strings.g.dart';
 import '../../../../shared/widgets/app_alerts.dart';
 import '../../../ai/presentation/providers/ai_providers.dart';
@@ -64,7 +66,7 @@ class _AddMotorcycleScreenState extends ConsumerState<AddMotorcycleScreen> {
     setState(() => _isAiLoading = true);
 
     try {
-      final service = ref.read(aiAutofillServiceProvider);
+      final service = ref.read(aiServiceProvider);
       final response = await service.autofillFromPrompt(query);
       if (response == null) {
         if (!mounted) return;
@@ -133,6 +135,7 @@ class _AddMotorcycleScreenState extends ConsumerState<AddMotorcycleScreen> {
       );
 
       await repository.add(motorcycle);
+      ref.invalidate(motorcyclesProvider);
       if (!mounted) return;
       context.pop();
       AppAlerts.success(context, message: t.garage.saveSuccess);
@@ -200,15 +203,6 @@ class _AddMotorcycleScreenState extends ConsumerState<AddMotorcycleScreen> {
                           _SectionCard(
                             child: Row(
                               children: [
-                                Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: ThemeTokens.primary.withOpacity(0.14),
-                                    borderRadius: BorderRadius.circular(14),
-                                  ),
-                                  child: const Icon(Icons.auto_awesome, color: ThemeTokens.primary),
-                                ),
-                                const SizedBox(width: 10),
                                 Expanded(
                                   child: TextField(
                                     controller: _aiQuery,
@@ -290,6 +284,9 @@ class _AddMotorcycleScreenState extends ConsumerState<AddMotorcycleScreen> {
                                   validator: (value) => (value == null || value.isEmpty)
                                       ? t.shared.requiredField
                                       : null,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                                  ],
                                 ),
                               ),
                               const SizedBox(width: 10),
@@ -300,6 +297,9 @@ class _AddMotorcycleScreenState extends ConsumerState<AddMotorcycleScreen> {
                                   validator: (value) => (value == null || value.isEmpty)
                                       ? t.shared.requiredField
                                       : null,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                                  ],
                                 ),
                               ),
                             ],
@@ -315,6 +315,7 @@ class _AddMotorcycleScreenState extends ConsumerState<AddMotorcycleScreen> {
                                   validator: (value) => (int.tryParse(value ?? '') == null)
                                       ? t.shared.invalidNumber
                                       : null,
+                                  inputFormatters: [const DigitsOnlyFormatter()],
                                 ),
                               ),
                               const SizedBox(width: 10),
@@ -322,6 +323,9 @@ class _AddMotorcycleScreenState extends ConsumerState<AddMotorcycleScreen> {
                                 child: _ModernTextField(
                                   label: t.garage.color,
                                   controller: _colorController,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                                  ],
                                 ),
                               ),
                             ],
@@ -333,6 +337,11 @@ class _AddMotorcycleScreenState extends ConsumerState<AddMotorcycleScreen> {
                                 child: _ModernTextField(
                                   label: t.garage.licensePlate,
                                   controller: _plateController,
+                                  textCapitalization: TextCapitalization.characters,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                                    const UpperCaseTextFormatter(),
+                                  ],
                                 ),
                               ),
                               const SizedBox(width: 10),
@@ -344,6 +353,7 @@ class _AddMotorcycleScreenState extends ConsumerState<AddMotorcycleScreen> {
                                   validator: (value) => (int.tryParse(value ?? '') == null)
                                       ? t.shared.invalidNumber
                                       : null,
+                                  inputFormatters: [const DigitsOnlyFormatter()],
                                 ),
                               ),
                             ],
@@ -414,12 +424,16 @@ class _ModernTextField extends StatelessWidget {
     required this.controller,
     this.keyboardType,
     this.validator,
+    this.textCapitalization = TextCapitalization.none,
+    this.inputFormatters,
   });
 
   final String label;
   final TextEditingController controller;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
+  final TextCapitalization textCapitalization;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -441,6 +455,8 @@ class _ModernTextField extends StatelessWidget {
           controller: controller,
           keyboardType: keyboardType,
           validator: validator,
+          textCapitalization: textCapitalization,
+          inputFormatters: inputFormatters,
           style: const TextStyle(color: ThemeTokens.textPrimary, fontWeight: FontWeight.w600),
           decoration: InputDecoration(
             isDense: true,

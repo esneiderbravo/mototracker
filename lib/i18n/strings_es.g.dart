@@ -55,6 +55,10 @@ class _TranslationsAiEs implements TranslationsAiEn {
 	@override String get searchWithAi => 'Buscar con IA';
 	@override String get hintExample => 'Yamaha R3 2022';
 	@override String get error => 'Error de IA';
+	@override String get loadingInsights => 'Generando insights con IA...';
+	@override String get insightsError => 'No se pudieron generar insights por ahora.';
+	@override String get insightsEmpty => 'No hay insights disponibles para esta moto todavia.';
+	@override String get retry => 'Reintentar';
 }
 
 // Path: auth
@@ -120,6 +124,7 @@ class _TranslationsGarageEs implements TranslationsGarageEn {
 	@override String get notFound => 'Moto no encontrada';
 	@override String get createdAt => 'Creado';
 	@override String get delete => 'Eliminar';
+	@override String deleteConfirmation({required Object name}) => '¿Estás seguro de que quieres eliminar permanentemente ${name}? Esta acción no se puede deshacer.';
 	@override String get noImage => 'Sin imagen';
 	@override String get addPhoto => 'Foto';
 	@override String get aiAutofillError => 'El autorrelleno de IA fallo. Por favor completa el formulario manualmente.';
@@ -159,6 +164,7 @@ class _TranslationsSharedEs implements TranslationsSharedEn {
 	@override String get invalidNumber => 'Ingresa un numero valido';
 	@override String get errorLabel => 'Error';
 	@override String get save => 'Guardar';
+	@override String get cancel => 'Cancelar';
 	@override String get unknownError => 'Ocurrio un error inesperado. Por favor intenta de nuevo.';
 }
 
@@ -174,6 +180,10 @@ extension on TranslationsEs {
 			'ai.searchWithAi' => 'Buscar con IA',
 			'ai.hintExample' => 'Yamaha R3 2022',
 			'ai.error' => 'Error de IA',
+			'ai.loadingInsights' => 'Generando insights con IA...',
+			'ai.insightsError' => 'No se pudieron generar insights por ahora.',
+			'ai.insightsEmpty' => 'No hay insights disponibles para esta moto todavia.',
+			'ai.retry' => 'Reintentar',
 			'auth.error' => 'Error de autenticacion',
 			'auth.signInError' => 'No se pudo iniciar sesion. Verifica tu correo y contraseña.',
 			'auth.signUpError' => 'No se pudo crear la cuenta. Prueba con otro correo.',
@@ -221,6 +231,7 @@ extension on TranslationsEs {
 			'garage.notFound' => 'Moto no encontrada',
 			'garage.createdAt' => 'Creado',
 			'garage.delete' => 'Eliminar',
+			'garage.deleteConfirmation' => ({required Object name}) => '¿Estás seguro de que quieres eliminar permanentemente ${name}? Esta acción no se puede deshacer.',
 			'garage.noImage' => 'Sin imagen',
 			'garage.addPhoto' => 'Foto',
 			'garage.aiAutofillError' => 'El autorrelleno de IA fallo. Por favor completa el formulario manualmente.',
@@ -242,6 +253,7 @@ extension on TranslationsEs {
 			'shared.invalidNumber' => 'Ingresa un numero valido',
 			'shared.errorLabel' => 'Error',
 			'shared.save' => 'Guardar',
+			'shared.cancel' => 'Cancelar',
 			'shared.unknownError' => 'Ocurrio un error inesperado. Por favor intenta de nuevo.',
 			_ => null,
 		};
