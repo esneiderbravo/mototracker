@@ -1,0 +1,35 @@
+schema: spec-driven
+
+context: |
+  Project: MotoTracker — Flutter app for motorcycle tracking.
+
+  Tech stack: Flutter (Dart), Riverpod, Supabase (PostgreSQL + Auth + Storage),
+  go_router, slang (i18n ES/EN), Groq AI (llama-3.1-8b-instant).
+
+  Architecture: Clean Architecture per feature.
+    - domain/entities/    → Pure Dart entities (const constructor, copyWith, fromJson, toJson, toInsertJson)
+    - domain/repositories/ → Abstract repository contracts
+    - data/               → SupabaseXxxRepository implementations
+    - presentation/providers/ → Riverpod providers
+    - presentation/screens/   → Full-page ConsumerWidgets (primitive params only)
+    - presentation/widgets/   → Feature-specific widgets
+
+  Rules:
+    - State management: Riverpod only (ConsumerWidget / ConsumerStatefulWidget)
+    - Navigation: go_router only — all routes in lib/core/router/app_router.dart
+    - Theme: always use ThemeTokens constants (never hardcode colors or sizes)
+    - i18n: add strings to both _es.i18n.json AND _en.i18n.json, then run `dart run slang`
+    - Async UI: use AsyncValueBuilder widget from shared/widgets/
+    - DB: all tables have id (UUID), user_id (UUID), created_at (TIMESTAMPTZ) + RLS enabled
+
+  Pattern reference: openspec/features/garage/spec.md
+
+rules:
+  proposal:
+    - Read openspec/ARCHITECTURE.md before writing any proposal
+    - Every proposal must include entity shape, repository contract, and Supabase schema
+    - Proposals must list both ES and EN i18n keys
+  tasks:
+    - Break tasks by layer: domain first, then data, then presentation
+    - Each task should reference the spec section it implements
+    - Include the `dart run slang` step whenever i18n strings are added
