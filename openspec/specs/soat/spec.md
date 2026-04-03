@@ -27,9 +27,7 @@ Enable users to register, review, and manage SOAT policies per motorcycle, inclu
 This feature lets users register and manage SOAT (mandatory insurance) data for each motorcycle, including insurer, policy number, start date, and expiry date. It also defines in-app expiry review states so users can quickly identify policies that are expiring soon (30, 15, and 5 days), plus a lookup flow to retrieve SOAT information from a provided license plate (`placa`). The first iteration focuses on clean CRUD + review UX; push notifications and cross-document grouping remain out of scope.
 
 ---
-
 ## Requirements
-
 ### Requirement: Active SOAT lookup by plate
 
 The system SHALL return the authenticated user's active SOAT policy when a normalized license plate is provided.
@@ -42,6 +40,65 @@ The system SHALL return the authenticated user's active SOAT policy when a norma
 - AND no data from other users is returned
 
 ---
+
+### Requirement: SOAT status visibility from motorcycle detail
+The system SHALL expose SOAT status and direct actions from the motorcycle detail context so users can immediately know coverage state for that bike.
+
+#### Scenario: User opens motorcycle detail with active SOAT
+- **WHEN** an authenticated user opens `/garage/:id` for a motorcycle with an active SOAT policy
+- **THEN** the app shows a visible SOAT section with current status and an action to open `/garage/:id/soat`
+
+#### Scenario: User opens motorcycle detail with no active SOAT
+- **WHEN** an authenticated user opens `/garage/:id` and no active SOAT exists for that motorcycle
+- **THEN** the app shows a deterministic missing/expired SOAT state and an action to create or review SOAT
+
+### Requirement: SOAT policy CRUD per motorcycle
+The system SHALL allow an authenticated user to create, view, update, and delete SOAT policies linked to motorcycles they own, while preserving user data isolation.
+
+#### Scenario: Create SOAT policy with valid fields
+- **WHEN** an authenticated user submits insurer, policy number, start date, and an expiry date that is strictly after the start date for one of their motorcycles
+- **THEN** the system stores the policy and makes it available in that motorcycle's SOAT history
+
+#### Scenario: Reject invalid SOAT policy dates
+- **WHEN** a user submits a SOAT policy where expiry date is the same as or before start date
+- **THEN** the system MUST reject the operation and keep existing data unchanged
+
+#### Scenario: Delete SOAT policy
+- **WHEN** a user confirms deletion of one of their SOAT policies
+- **THEN** the system removes that policy and it no longer appears in SOAT history results
+
+### Requirement: Real-time SOAT history and expiry review states
+The system SHALL provide real-time SOAT history per motorcycle ordered by `expiryDate` descending and SHALL compute status bands using date-only comparisons.
+
+#### Scenario: Render SOAT history in descending expiry order
+- **WHEN** SOAT records exist for a motorcycle
+- **THEN** the system returns and displays records ordered from latest to earliest expiry date
+
+#### Scenario: Compute expiry status bands
+- **WHEN** the system evaluates a SOAT record against the current date
+- **THEN** it assigns exactly one status from `active`, `due30`, `due15`, `due5`, or `expired` using configured day-range thresholds
+
+### Requirement: Active SOAT lookup by normalized license plate
+The system SHALL return the authenticated user's active SOAT policy for a provided license plate after normalization (uppercase, no spaces), and SHALL never expose data from other users.
+
+#### Scenario: Find active SOAT by plate
+- **WHEN** a user searches with a plate that maps to one of their motorcycles with a non-expired SOAT policy
+- **THEN** the system returns that active SOAT policy details
+
+#### Scenario: No active policy for plate
+- **WHEN** a user searches a valid plate and no active SOAT policy exists for that user scope
+- **THEN** the system returns a deterministic not-found result
+
+### Requirement: SOAT UX integration with routing and localized text
+The system SHALL expose SOAT flows through `go_router` routes and SHALL provide all user-facing SOAT strings in both Spanish and English localization files.
+
+#### Scenario: Navigate to SOAT routes
+- **WHEN** the user opens `/soat/lookup` or `/garage/:id/soat` flows
+- **THEN** the application resolves the configured SOAT screens without breaking existing garage navigation
+
+#### Scenario: Localized text availability
+- **WHEN** the app is rendered in ES or EN locale
+- **THEN** SOAT labels, actions, status text, and messages are provided from corresponding i18n keys in both locales
 
 ## User Stories
 

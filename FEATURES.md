@@ -61,6 +61,14 @@
 - [x] User profile screen
 - [x] Sign out
 
+### 📄 SOAT (`features/soat`)
+- [x] SOAT policy registry per motorcycle (create, edit, delete, history)
+- [x] Active SOAT lookup by normalized license plate (`/soat/lookup`)
+- [x] Expiry status review (`active`, `due30`, `due15`, `due5`, `expired`)
+- [x] SOAT routes under garage (`/garage/:id/soat`, add and detail flows)
+- [x] SOAT status visibility and quick actions from motorcycle detail (`/garage/:id`)
+- [x] SOAT localization strings in ES/EN with `slang` generation
+
 ### 🎨 Shared UI / UX
 - [x] Dark theme with orange palette (`ThemeTokens`)
 - [x] Bottom navigation bar (Garage / Profile)
@@ -93,7 +101,6 @@
 - [ ] **AI**: estimate maintenance cost by make / model / year
 
 ### 📄 Legal Documents
-- [ ] SOAT (mandatory insurance) registry: expiry date, policy number, insurer
 - [ ] SOAT expiry notifications (30, 15 and 5 days before)
 - [ ] Technical-Mechanical Inspection (RTM) registry
 - [ ] RTM expiry notifications

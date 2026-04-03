@@ -45,6 +45,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final TranslationsGarageEn garage = TranslationsGarageEn._(_root);
 	late final TranslationsProfileEn profile = TranslationsProfileEn._(_root);
 	late final TranslationsSharedEn shared = TranslationsSharedEn._(_root);
+	late final TranslationsSoatEn soat = TranslationsSoatEn._(_root);
 }
 
 // Path: ai
@@ -235,6 +236,18 @@ class TranslationsGarageEn {
 	/// en: 'Created'
 	String get createdAt => 'Created';
 
+	/// en: 'SOAT coverage'
+	String get soatSectionTitle => 'SOAT coverage';
+
+	/// en: 'Check status and manage policy for this bike'
+	String get soatSectionSubtitle => 'Check status and manage policy for this bike';
+
+	/// en: 'Open SOAT history'
+	String get openSoatHistory => 'Open SOAT history';
+
+	/// en: 'Lookup by plate'
+	String get lookupSoatByPlate => 'Lookup by plate';
+
 	/// en: 'Delete'
 	String get delete => 'Delete';
 
@@ -322,11 +335,106 @@ class TranslationsSharedEn {
 	/// en: 'Save'
 	String get save => 'Save';
 
+	/// en: 'Edit'
+	String get edit => 'Edit';
+
 	/// en: 'Cancel'
 	String get cancel => 'Cancel';
 
 	/// en: 'An unexpected error occurred. Please try again.'
 	String get unknownError => 'An unexpected error occurred. Please try again.';
+}
+
+// Path: soat
+class TranslationsSoatEn {
+	TranslationsSoatEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'SOAT'
+	String get title => 'SOAT';
+
+	/// en: 'Lookup by plate'
+	String get lookup => 'Lookup by plate';
+
+	/// en: 'License Plate'
+	String get plate => 'License Plate';
+
+	/// en: 'Search'
+	String get search => 'Search';
+
+	/// en: 'No active SOAT found for this plate'
+	String get notFoundByPlate => 'No active SOAT found for this plate';
+
+	/// en: 'SOAT History'
+	String get history => 'SOAT History';
+
+	/// en: 'Add SOAT'
+	String get addPolicy => 'Add SOAT';
+
+	/// en: 'No active SOAT for this motorcycle'
+	String get noActiveForMotorcycle => 'No active SOAT for this motorcycle';
+
+	/// en: 'Insurer'
+	String get insurer => 'Insurer';
+
+	/// en: 'Policy Number'
+	String get policyNumber => 'Policy Number';
+
+	/// en: 'Coverage Start'
+	String get startDate => 'Coverage Start';
+
+	/// en: 'Expiry Date'
+	String get expiryDate => 'Expiry Date';
+
+	/// en: 'Days until expiry'
+	String get daysUntilExpiry => 'Days until expiry';
+
+	/// en: 'Expiry date must be after start date'
+	String get invalidDateRange => 'Expiry date must be after start date';
+
+	/// en: 'Notes (optional)'
+	String get notes => 'Notes (optional)';
+
+	/// en: 'No SOAT policies registered'
+	String get empty => 'No SOAT policies registered';
+
+	/// en: 'SOAT saved successfully.'
+	String get saveSuccess => 'SOAT saved successfully.';
+
+	/// en: 'Could not save SOAT. Please try again.'
+	String get saveError => 'Could not save SOAT. Please try again.';
+
+	/// en: 'Delete this SOAT policy? This action cannot be undone.'
+	String get deleteConfirmation => 'Delete this SOAT policy? This action cannot be undone.';
+
+	late final TranslationsSoatStatusesEn statuses = TranslationsSoatStatusesEn._(_root);
+}
+
+// Path: soat.statuses
+class TranslationsSoatStatusesEn {
+	TranslationsSoatStatusesEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Active'
+	String get active => 'Active';
+
+	/// en: 'Due soon (30 days)'
+	String get due30 => 'Due soon (30 days)';
+
+	/// en: 'Due in 15 days'
+	String get due15 => 'Due in 15 days';
+
+	/// en: 'Due in 5 days'
+	String get due5 => 'Due in 5 days';
+
+	/// en: 'Expired'
+	String get expired => 'Expired';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -391,6 +499,10 @@ extension on Translations {
 			'garage.motorcycleDetail' => 'Motorcycle detail',
 			'garage.notFound' => 'Motorcycle not found',
 			'garage.createdAt' => 'Created',
+			'garage.soatSectionTitle' => 'SOAT coverage',
+			'garage.soatSectionSubtitle' => 'Check status and manage policy for this bike',
+			'garage.openSoatHistory' => 'Open SOAT history',
+			'garage.lookupSoatByPlate' => 'Lookup by plate',
 			'garage.delete' => 'Delete',
 			'garage.deleteConfirmation' => ({required Object name}) => 'Are you sure you want to permanently delete ${name}? This action cannot be undone.',
 			'garage.noImage' => 'No image',
@@ -414,8 +526,33 @@ extension on Translations {
 			'shared.invalidNumber' => 'Enter a valid number',
 			'shared.errorLabel' => 'Error',
 			'shared.save' => 'Save',
+			'shared.edit' => 'Edit',
 			'shared.cancel' => 'Cancel',
 			'shared.unknownError' => 'An unexpected error occurred. Please try again.',
+			'soat.title' => 'SOAT',
+			'soat.lookup' => 'Lookup by plate',
+			'soat.plate' => 'License Plate',
+			'soat.search' => 'Search',
+			'soat.notFoundByPlate' => 'No active SOAT found for this plate',
+			'soat.history' => 'SOAT History',
+			'soat.addPolicy' => 'Add SOAT',
+			'soat.noActiveForMotorcycle' => 'No active SOAT for this motorcycle',
+			'soat.insurer' => 'Insurer',
+			'soat.policyNumber' => 'Policy Number',
+			'soat.startDate' => 'Coverage Start',
+			'soat.expiryDate' => 'Expiry Date',
+			'soat.daysUntilExpiry' => 'Days until expiry',
+			'soat.invalidDateRange' => 'Expiry date must be after start date',
+			'soat.notes' => 'Notes (optional)',
+			'soat.empty' => 'No SOAT policies registered',
+			'soat.saveSuccess' => 'SOAT saved successfully.',
+			'soat.saveError' => 'Could not save SOAT. Please try again.',
+			'soat.deleteConfirmation' => 'Delete this SOAT policy? This action cannot be undone.',
+			'soat.statuses.active' => 'Active',
+			'soat.statuses.due30' => 'Due soon (30 days)',
+			'soat.statuses.due15' => 'Due in 15 days',
+			'soat.statuses.due5' => 'Due in 5 days',
+			'soat.statuses.expired' => 'Expired',
 			_ => null,
 		};
 	}

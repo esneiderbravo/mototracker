@@ -5,6 +5,7 @@
   "invalidNumber": "Enter a valid number",
   "errorLabel": "Error",
   "save": "Save",
+  "edit": "Edit",
   "cancel": "Cancel",
   "unknownError": "An unexpected error occurred. Please try again."
 }

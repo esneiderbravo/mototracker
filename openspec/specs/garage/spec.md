@@ -27,9 +27,7 @@ Define the implemented garage behavior for listing and managing motorcycles owne
 The garage allows users to register, view, and manage their motorcycles. Each motorcycle has a photo, technical data (make, model, year, color, license plate, mileage), and receives personalized AI insights. It is the main screen of the app after login.
 
 ---
-
 ## Requirements
-
 ### Requirement: List motorcycles for authenticated user
 
 The system SHALL display only motorcycles owned by the authenticated user in the garage list.
@@ -42,6 +40,17 @@ The system SHALL display only motorcycles owned by the authenticated user in the
 - AND motorcycles from other users are not shown
 
 ---
+
+### Requirement: Motorcycle detail provides SOAT entry point
+The system SHALL include a SOAT entry point in motorcycle detail to improve legal-document discoverability without leaving the bike context.
+
+#### Scenario: User navigates from detail to SOAT history
+- **WHEN** the user taps the SOAT section action from `/garage/:id`
+- **THEN** the app navigates to `/garage/:id/soat`
+
+#### Scenario: Detail SOAT entry is user-scoped
+- **WHEN** SOAT status is rendered inside motorcycle detail
+- **THEN** the status and actions are based only on the authenticated user's motorcycle data
 
 ## User Stories
 

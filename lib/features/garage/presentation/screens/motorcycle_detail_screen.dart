@@ -5,6 +5,9 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/theme/theme_tokens.dart';
 import '../../../ai/presentation/providers/ai_providers.dart';
+import '../../../soat/presentation/providers/soat_providers.dart';
+import '../../../soat/domain/entities/soat_policy.dart';
+import '../../../soat/presentation/widgets/soat_status_chip.dart';
 import '../../../../i18n/strings.g.dart';
 import '../../../../shared/widgets/async_value_builder.dart';
 import '../../../../shared/widgets/moto_bottom_nav.dart';
@@ -55,6 +58,7 @@ class MotorcycleDetailScreen extends ConsumerWidget {
                 currentKm: bike.currentKm,
               );
               final insights = ref.watch(aiInsightsProvider(insightsInput));
+              final activeSoat = ref.watch(activeSoatByMotorcycleProvider(bike.id));
 
               return SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
@@ -255,6 +259,12 @@ class MotorcycleDetailScreen extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
+                    _SoatSection(
+                      value: activeSoat,
+                      motorcycleId: bike.id,
+                      licensePlate: bike.licensePlate,
+                    ),
+                    const SizedBox(height: 16),
                     Row(
                       children: [
                         Expanded(
@@ -337,6 +347,107 @@ class _Info extends StatelessWidget {
         ),
         if (showDivider) const Divider(height: 1),
       ],
+    );
+  }
+}
+
+class _SoatSection extends ConsumerWidget {
+  const _SoatSection({required this.value, required this.motorcycleId, required this.licensePlate});
+
+  final AsyncValue<SoatPolicy?> value;
+  final String motorcycleId;
+  final String licensePlate;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = Translations.of(context);
+    return _DetailCard(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            t.garage.soatSectionTitle,
+            style: const TextStyle(
+              color: ThemeTokens.primary,
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            t.garage.soatSectionSubtitle,
+            style: const TextStyle(color: ThemeTokens.textSecondary),
+          ),
+          const SizedBox(height: 14),
+          AsyncValueBuilder(
+            value: value,
+            onData: (policy) {
+              if (policy == null) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      t.soat.noActiveForMotorcycle,
+                      style: const TextStyle(color: ThemeTokens.textSecondary),
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () => context.push('/garage/$motorcycleId/soat/add'),
+                            child: Text(t.soat.addPolicy),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () =>
+                                context.push('/soat/lookup?plate=${licensePlate.toUpperCase()}'),
+                            child: Text(t.garage.lookupSoatByPlate),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              }
+
+              final days = policy.daysUntilExpiry(DateTime.now());
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          policy.displayName,
+                          style: const TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      SoatStatusChip(status: policy.expiryStatus(DateTime.now())),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '${t.soat.daysUntilExpiry}: $days',
+                    style: const TextStyle(color: ThemeTokens.textSecondary),
+                  ),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => context.push('/garage/$motorcycleId/soat'),
+                      child: Text(t.garage.openSoatHistory),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }
