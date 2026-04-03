@@ -16,9 +16,30 @@
 
 ---
 
+## Purpose
+
+Enable users to register, review, and manage SOAT policies per motorcycle, including active-policy lookup by license plate within the authenticated user scope.
+
+---
+
 ## Summary
 
 This feature lets users register and manage SOAT (mandatory insurance) data for each motorcycle, including insurer, policy number, start date, and expiry date. It also defines in-app expiry review states so users can quickly identify policies that are expiring soon (30, 15, and 5 days), plus a lookup flow to retrieve SOAT information from a provided license plate (`placa`). The first iteration focuses on clean CRUD + review UX; push notifications and cross-document grouping remain out of scope.
+
+---
+
+## Requirements
+
+### Requirement: Active SOAT lookup by plate
+
+The system SHALL return the authenticated user's active SOAT policy when a normalized license plate is provided.
+
+#### Scenario: User searches a plate with an active policy
+
+- GIVEN an authenticated user and a motorcycle with an active SOAT policy
+- WHEN the user searches by that motorcycle's license plate
+- THEN the app returns the active SOAT policy details
+- AND no data from other users is returned
 
 ---
 

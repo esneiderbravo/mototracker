@@ -1,3 +1,5 @@
+version: 1.2.0
+profile: default
 schema: spec-driven
 
 context: |

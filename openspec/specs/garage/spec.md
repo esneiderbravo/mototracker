@@ -16,9 +16,30 @@
 
 ---
 
+## Purpose
+
+Define the implemented garage behavior for listing and managing motorcycles owned by the authenticated user.
+
+---
+
 ## Summary
 
 The garage allows users to register, view, and manage their motorcycles. Each motorcycle has a photo, technical data (make, model, year, color, license plate, mileage), and receives personalized AI insights. It is the main screen of the app after login.
+
+---
+
+## Requirements
+
+### Requirement: List motorcycles for authenticated user
+
+The system SHALL display only motorcycles owned by the authenticated user in the garage list.
+
+#### Scenario: User opens the garage home screen
+
+- GIVEN an authenticated user with one or more motorcycles
+- WHEN the user navigates to `/garage`
+- THEN the app shows that user's motorcycles in the garage list
+- AND motorcycles from other users are not shown
 
 ---
 
