@@ -22,7 +22,7 @@ context: |
     - Async UI: use AsyncValueBuilder widget from shared/widgets/
     - DB: all tables have id (UUID), user_id (UUID), created_at (TIMESTAMPTZ) + RLS enabled
 
-  Pattern reference: openspec/features/garage/spec.md
+  Pattern reference: openspec/specs/garage/spec.md
 
 rules:
   proposal:

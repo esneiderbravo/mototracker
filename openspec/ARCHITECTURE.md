@@ -199,9 +199,9 @@ CREATE POLICY "Users manage own records" ON <table>
 ## SDD Workflow
 
 ```
-1. Copy  openspec/_templates/feature_spec.md  →  openspec/features/<name>/spec.md
+1. Copy  openspec/_templates/feature_spec.md  →  openspec/specs/<name>/spec.md
 2. Fill in the spec (30–60 min)
-3. Prompt the AI: "Read openspec/ARCHITECTURE.md and openspec/features/<name>/spec.md, then implement the domain layer"
+3. Prompt the AI: "Read openspec/ARCHITECTURE.md and openspec/specs/<name>/spec.md, then implement the domain layer"
 4. Review generated code against the spec's acceptance criteria
 5. Repeat per layer: domain → data → presentation
 6. Update FEATURES.md with [x] and a link to the spec

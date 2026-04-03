@@ -5,7 +5,7 @@ You are an AI coding assistant working on **MotoTracker**, a Flutter app for mot
 ## Before writing any code
 
 1. Read `openspec/ARCHITECTURE.md` — it contains all project conventions (folder structure, naming, patterns, theme tokens, i18n, routing).
-2. If a feature spec exists at `openspec/features/<name>/spec.md`, read it entirely before implementing anything.
+2. If a feature spec exists at `openspec/specs/<name>/spec.md`, read it entirely before implementing anything.
 
 ## Project conventions (summary)
 
@@ -38,7 +38,7 @@ lib/features/<name>/
 
 ## When adding a new feature
 
-1. Check `openspec/features/<name>/spec.md` for entity shape, repository contract, providers, routes, and i18n keys.
+1. Check `openspec/specs/<name>/spec.md` for entity shape, repository contract, providers, routes, and i18n keys.
 2. Implement layers in order: **domain → data → presentation**.
 3. Register routes in `lib/core/router/app_router.dart`.
 4. Add string keys to both `_es.i18n.json` and `_en.i18n.json`, then run `dart run slang`.

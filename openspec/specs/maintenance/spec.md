@@ -1,7 +1,7 @@
 # Spec: Maintenance Tracking
 
 > **For the AI assistant:** Read `openspec/ARCHITECTURE.md` AND this full spec before generating any code.
-> The garage feature (`openspec/features/garage/spec.md`) is your primary pattern reference.
+> The garage feature (`openspec/specs/garage/spec.md`) is your primary pattern reference.
 
 ---
 
@@ -399,7 +399,7 @@ Respond in the language indicated by languageCode: {languageCode}
 ## References
 
 - `openspec/ARCHITECTURE.md`
-- `openspec/features/garage/spec.md` — full pattern reference
+- `openspec/specs/garage/spec.md` — full pattern reference
 - `lib/features/garage/domain/entities/motorcycle.dart` — entity pattern
 - `lib/features/garage/domain/repositories/motorcycle_repository.dart` — repository pattern
 - `lib/features/garage/data/supabase_motorcycle_repository.dart` — Supabase implementation pattern
