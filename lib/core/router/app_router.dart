@@ -9,10 +9,6 @@ import '../../features/garage/presentation/screens/add_motorcycle_screen.dart';
 import '../../features/garage/presentation/screens/home_screen.dart';
 import '../../features/garage/presentation/screens/motorcycle_detail_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
-import '../../features/soat/presentation/screens/add_soat_screen.dart';
-import '../../features/soat/presentation/screens/soat_detail_screen.dart';
-import '../../features/soat/presentation/screens/soat_list_screen.dart';
-import '../../features/soat/presentation/screens/soat_lookup_screen.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
@@ -44,35 +40,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: ':id',
             builder: (_, state) => MotorcycleDetailScreen(id: state.pathParameters['id']!),
-            routes: [
-              GoRoute(
-                path: 'soat',
-                builder: (_, state) => SoatListScreen(motorcycleId: state.pathParameters['id']!),
-                routes: [
-                  GoRoute(
-                    path: 'add',
-                    pageBuilder: (context, state) => CustomTransitionPage<void>(
-                      key: state.pageKey,
-                      child: AddSoatScreen(motorcycleId: state.pathParameters['id']!),
-                      transitionsBuilder: _slideAndFade,
-                    ),
-                  ),
-                  GoRoute(
-                    path: ':soatId',
-                    builder: (_, state) => SoatDetailScreen(
-                      motorcycleId: state.pathParameters['id']!,
-                      soatId: state.pathParameters['soatId']!,
-                    ),
-                  ),
-                ],
-              ),
-            ],
           ),
         ],
-      ),
-      GoRoute(
-        path: '/soat/lookup',
-        builder: (_, state) => SoatLookupScreen(initialPlate: state.uri.queryParameters['plate']),
       ),
       GoRoute(path: '/profile', builder: (context, state) => const ProfileScreen()),
       GoRoute(

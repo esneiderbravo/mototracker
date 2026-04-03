@@ -10,6 +10,12 @@
   "noEmail": "No email",
   "subtitle": "Keep your bikes, docs and maintenance in sync with Supabase cloud.",
   "saveSuccess": "Profile updated successfully.",
-  "saveError": "Could not update profile. Please try again."
+  "saveError": "Could not update profile. Please try again.",
+  "identificationHint": "Required to enable automatic lookups.",
+  "documentType": "Document type",
+  "documentNumber": "Document number",
+  "documentNumberHint": "Enter your number without spaces or dashes",
+  "identificationRequired": "Complete your identification to enable automatic lookup.",
+  "identificationMissingForRunt": "Identification required. Go to your profile to enable lookup."
 }
 

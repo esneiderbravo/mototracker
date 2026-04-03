@@ -50,6 +50,8 @@ class SupabaseAuthRepository implements AuthRepository {
     required String phone,
     required String phoneCountryIso2,
     String? avatarUrl,
+    String? documentType,
+    String? documentNumber,
   }) async {
     final client = _requiredClient;
     final data = <String, dynamic>{
@@ -57,9 +59,9 @@ class SupabaseAuthRepository implements AuthRepository {
       'phone': phone,
       'phone_country_iso2': phoneCountryIso2,
     };
-    if (avatarUrl != null) {
-      data['avatar_url'] = avatarUrl;
-    }
+    if (avatarUrl != null) data['avatar_url'] = avatarUrl;
+    if (documentType != null) data['document_type'] = documentType;
+    if (documentNumber != null) data['document_number'] = documentNumber;
 
     await client.auth.updateUser(UserAttributes(data: data));
   }

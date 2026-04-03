@@ -13,6 +13,8 @@ abstract class AuthRepository {
     required String phone,
     required String phoneCountryIso2,
     String? avatarUrl,
+    String? documentType,
+    String? documentNumber,
   });
 
   Future<String> uploadAvatar({

@@ -42,7 +42,6 @@ class TranslationsEs with BaseTranslations<AppLocale, Translations> implements T
 	@override late final _TranslationsGarageEs garage = _TranslationsGarageEs._(_root);
 	@override late final _TranslationsProfileEs profile = _TranslationsProfileEs._(_root);
 	@override late final _TranslationsSharedEs shared = _TranslationsSharedEs._(_root);
-	@override late final _TranslationsSoatEs soat = _TranslationsSoatEs._(_root);
 }
 
 // Path: ai
@@ -124,10 +123,6 @@ class _TranslationsGarageEs implements TranslationsGarageEn {
 	@override String get motorcycleDetail => 'Detalle de moto';
 	@override String get notFound => 'Moto no encontrada';
 	@override String get createdAt => 'Creado';
-	@override String get soatSectionTitle => 'Cobertura SOAT';
-	@override String get soatSectionSubtitle => 'Revisa estado y gestiona la poliza de esta moto';
-	@override String get openSoatHistory => 'Abrir historial SOAT';
-	@override String get lookupSoatByPlate => 'Buscar por placa';
 	@override String get delete => 'Eliminar';
 	@override String deleteConfirmation({required Object name}) => '¿Estás seguro de que quieres eliminar permanentemente ${name}? Esta acción no se puede deshacer.';
 	@override String get noImage => 'Sin imagen';
@@ -154,6 +149,12 @@ class _TranslationsProfileEs implements TranslationsProfileEn {
 	@override String get subtitle => 'Manten tus motos, documentos y mantenimientos en la nube de Supabase.';
 	@override String get saveSuccess => 'Perfil actualizado correctamente.';
 	@override String get saveError => 'No se pudo actualizar el perfil. Por favor intenta de nuevo.';
+	@override String get identificationHint => 'Requerido para habilitar consultas automaticas.';
+	@override String get documentType => 'Tipo de documento';
+	@override String get documentNumber => 'Numero de documento';
+	@override String get documentNumberHint => 'Ingresa tu numero sin espacios ni guiones';
+	@override String get identificationRequired => 'Completa tu identificacion para activar la busqueda automatica.';
+	@override String get identificationMissingForRunt => 'Identificacion requerida. Ve a tu perfil para activar la busqueda.';
 }
 
 // Path: shared
@@ -172,49 +173,6 @@ class _TranslationsSharedEs implements TranslationsSharedEn {
 	@override String get edit => 'Editar';
 	@override String get cancel => 'Cancelar';
 	@override String get unknownError => 'Ocurrio un error inesperado. Por favor intenta de nuevo.';
-}
-
-// Path: soat
-class _TranslationsSoatEs implements TranslationsSoatEn {
-	_TranslationsSoatEs._(this._root);
-
-	final TranslationsEs _root; // ignore: unused_field
-
-	// Translations
-	@override String get title => 'SOAT';
-	@override String get lookup => 'Buscar por placa';
-	@override String get plate => 'Placa';
-	@override String get search => 'Buscar';
-	@override String get notFoundByPlate => 'No se encontro un SOAT vigente para esta placa';
-	@override String get history => 'Historial de SOAT';
-	@override String get addPolicy => 'Agregar SOAT';
-	@override String get noActiveForMotorcycle => 'No hay SOAT vigente para esta moto';
-	@override String get insurer => 'Aseguradora';
-	@override String get policyNumber => 'Numero de poliza';
-	@override String get startDate => 'Inicio de cobertura';
-	@override String get expiryDate => 'Vencimiento';
-	@override String get daysUntilExpiry => 'Dias para vencimiento';
-	@override String get invalidDateRange => 'La fecha de vencimiento debe ser posterior a la fecha de inicio';
-	@override String get notes => 'Notas (opcional)';
-	@override String get empty => 'No hay polizas SOAT registradas';
-	@override String get saveSuccess => 'SOAT guardado correctamente.';
-	@override String get saveError => 'No se pudo guardar el SOAT. Intenta de nuevo.';
-	@override String get deleteConfirmation => 'Eliminar esta poliza SOAT? Esta accion no se puede deshacer.';
-	@override late final _TranslationsSoatStatusesEs statuses = _TranslationsSoatStatusesEs._(_root);
-}
-
-// Path: soat.statuses
-class _TranslationsSoatStatusesEs implements TranslationsSoatStatusesEn {
-	_TranslationsSoatStatusesEs._(this._root);
-
-	final TranslationsEs _root; // ignore: unused_field
-
-	// Translations
-	@override String get active => 'Vigente';
-	@override String get due30 => 'Vence pronto (30 dias)';
-	@override String get due15 => 'Vence en 15 dias';
-	@override String get due5 => 'Vence en 5 dias';
-	@override String get expired => 'Vencido';
 }
 
 /// The flat map containing all translations for locale <es>.
@@ -279,10 +237,6 @@ extension on TranslationsEs {
 			'garage.motorcycleDetail' => 'Detalle de moto',
 			'garage.notFound' => 'Moto no encontrada',
 			'garage.createdAt' => 'Creado',
-			'garage.soatSectionTitle' => 'Cobertura SOAT',
-			'garage.soatSectionSubtitle' => 'Revisa estado y gestiona la poliza de esta moto',
-			'garage.openSoatHistory' => 'Abrir historial SOAT',
-			'garage.lookupSoatByPlate' => 'Buscar por placa',
 			'garage.delete' => 'Eliminar',
 			'garage.deleteConfirmation' => ({required Object name}) => '¿Estás seguro de que quieres eliminar permanentemente ${name}? Esta acción no se puede deshacer.',
 			'garage.noImage' => 'Sin imagen',
@@ -300,6 +254,12 @@ extension on TranslationsEs {
 			'profile.subtitle' => 'Manten tus motos, documentos y mantenimientos en la nube de Supabase.',
 			'profile.saveSuccess' => 'Perfil actualizado correctamente.',
 			'profile.saveError' => 'No se pudo actualizar el perfil. Por favor intenta de nuevo.',
+			'profile.identificationHint' => 'Requerido para habilitar consultas automaticas.',
+			'profile.documentType' => 'Tipo de documento',
+			'profile.documentNumber' => 'Numero de documento',
+			'profile.documentNumberHint' => 'Ingresa tu numero sin espacios ni guiones',
+			'profile.identificationRequired' => 'Completa tu identificacion para activar la busqueda automatica.',
+			'profile.identificationMissingForRunt' => 'Identificacion requerida. Ve a tu perfil para activar la busqueda.',
 			'shared.navGarage' => 'Garaje',
 			'shared.navProfile' => 'Perfil',
 			'shared.requiredField' => 'Campo requerido',
@@ -309,30 +269,6 @@ extension on TranslationsEs {
 			'shared.edit' => 'Editar',
 			'shared.cancel' => 'Cancelar',
 			'shared.unknownError' => 'Ocurrio un error inesperado. Por favor intenta de nuevo.',
-			'soat.title' => 'SOAT',
-			'soat.lookup' => 'Buscar por placa',
-			'soat.plate' => 'Placa',
-			'soat.search' => 'Buscar',
-			'soat.notFoundByPlate' => 'No se encontro un SOAT vigente para esta placa',
-			'soat.history' => 'Historial de SOAT',
-			'soat.addPolicy' => 'Agregar SOAT',
-			'soat.noActiveForMotorcycle' => 'No hay SOAT vigente para esta moto',
-			'soat.insurer' => 'Aseguradora',
-			'soat.policyNumber' => 'Numero de poliza',
-			'soat.startDate' => 'Inicio de cobertura',
-			'soat.expiryDate' => 'Vencimiento',
-			'soat.daysUntilExpiry' => 'Dias para vencimiento',
-			'soat.invalidDateRange' => 'La fecha de vencimiento debe ser posterior a la fecha de inicio',
-			'soat.notes' => 'Notas (opcional)',
-			'soat.empty' => 'No hay polizas SOAT registradas',
-			'soat.saveSuccess' => 'SOAT guardado correctamente.',
-			'soat.saveError' => 'No se pudo guardar el SOAT. Intenta de nuevo.',
-			'soat.deleteConfirmation' => 'Eliminar esta poliza SOAT? Esta accion no se puede deshacer.',
-			'soat.statuses.active' => 'Vigente',
-			'soat.statuses.due30' => 'Vence pronto (30 dias)',
-			'soat.statuses.due15' => 'Vence en 15 dias',
-			'soat.statuses.due5' => 'Vence en 5 dias',
-			'soat.statuses.expired' => 'Vencido',
 			_ => null,
 		};
 	}

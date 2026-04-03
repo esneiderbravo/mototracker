@@ -10,6 +10,12 @@
   "noEmail": "Sin correo",
   "subtitle": "Manten tus motos, documentos y mantenimientos en la nube de Supabase.",
   "saveSuccess": "Perfil actualizado correctamente.",
-  "saveError": "No se pudo actualizar el perfil. Por favor intenta de nuevo."
+  "saveError": "No se pudo actualizar el perfil. Por favor intenta de nuevo.",
+  "identificationHint": "Requerido para habilitar consultas automaticas.",
+  "documentType": "Tipo de documento",
+  "documentNumber": "Numero de documento",
+  "documentNumberHint": "Ingresa tu numero sin espacios ni guiones",
+  "identificationRequired": "Completa tu identificacion para activar la busqueda automatica.",
+  "identificationMissingForRunt": "Identificacion requerida. Ve a tu perfil para activar la busqueda."
 }
 

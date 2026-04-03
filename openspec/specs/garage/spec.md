@@ -42,7 +42,7 @@ The system SHALL display only motorcycles owned by the authenticated user in the
 ---
 
 ### Requirement: Motorcycle detail provides SOAT entry point
-The system SHALL include a SOAT entry point in motorcycle detail to improve legal-document discoverability without leaving the bike context.
+The system SHALL include a SOAT entry point in motorcycle detail and SHALL support automatic SOAT lookup by the motorcycle plate when profile identification requirements are satisfied.
 
 #### Scenario: User navigates from detail to SOAT history
 - **WHEN** the user taps the SOAT section action from `/garage/:id`
@@ -51,6 +51,14 @@ The system SHALL include a SOAT entry point in motorcycle detail to improve lega
 #### Scenario: Detail SOAT entry is user-scoped
 - **WHEN** SOAT status is rendered inside motorcycle detail
 - **THEN** the status and actions are based only on the authenticated user's motorcycle data
+
+#### Scenario: Motorcycle detail auto-searches SOAT with eligible profile
+- **WHEN** an authenticated user opens `/garage/:id` and profile includes required identification fields
+- **THEN** the app triggers SOAT lookup automatically using that motorcycle's normalized plate
+
+#### Scenario: Motorcycle detail prompts profile completion when ineligible
+- **WHEN** an authenticated user opens `/garage/:id` without required profile identification fields
+- **THEN** the app shows a deterministic prompt to complete profile before automatic SOAT lookup
 
 ## User Stories
 

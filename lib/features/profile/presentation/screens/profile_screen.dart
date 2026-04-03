@@ -12,6 +12,7 @@ import '../../../../i18n/strings.g.dart';
 import '../../../../shared/widgets/app_alerts.dart';
 import '../../../../shared/widgets/moto_bottom_nav.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
+import '../../domain/entities/profile_identification.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -26,8 +27,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   String? _loadedUserId;
   final _fullNameController = TextEditingController();
   final _phoneController = TextEditingController();
+  final _documentNumberController = TextEditingController();
   String _selectedPhoneCountryIso2 = 'CO';
   String _phoneDigits = '';
+  DocumentType _selectedDocumentType = DocumentType.cc;
   bool _isLoadingProfile = false;
   bool _isSaving = false;
 
@@ -45,6 +48,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         ((metadata?['phone_country_iso2'] as String?)?.trim().toUpperCase().isNotEmpty ?? false)
         ? (metadata?['phone_country_iso2'] as String).toUpperCase()
         : 'CO';
+    final docTypeCode = (metadata?['document_type'] as String?)?.trim();
+    final docNumber = (metadata?['document_number'] as String?)?.trim() ?? '';
     if (!mounted) return;
     setState(() {
       _loadedUserId = userId;
@@ -54,6 +59,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       _selectedPhoneCountryIso2 = countryIso;
       _phoneDigits = _digitsOnly(phone);
       _phoneController.text = _toLocalDigits(_phoneDigits, countryIso);
+      if (docTypeCode != null) {
+        _selectedDocumentType = documentTypeFromCode(docTypeCode);
+      }
+      _documentNumberController.text = docNumber;
     });
     _isLoadingProfile = false;
   }
@@ -62,6 +71,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   void dispose() {
     _fullNameController.dispose();
     _phoneController.dispose();
+    _documentNumberController.dispose();
     super.dispose();
   }
 
@@ -77,6 +87,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Future<void> _saveProfile(String userId) async {
+    final t = Translations.of(context);
+    final docNumber = _documentNumberController.text.trim().replaceAll(RegExp(r'\D'), '');
+    if (docNumber.length < 6) {
+      AppAlerts.error(context, message: t.profile.identificationRequired);
+      return;
+    }
+
     setState(() => _isSaving = true);
     try {
       var avatarUrl = _avatarUrl;
@@ -96,6 +113,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 : _digitsOnly(_phoneController.text.trim()),
             phoneCountryIso2: _selectedPhoneCountryIso2,
             avatarUrl: avatarUrl,
+            documentType: _selectedDocumentType.documentType,
+            documentNumber: docNumber,
           );
 
       if (mounted) {
@@ -105,11 +124,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         });
       }
       if (!mounted) return;
-      final t = Translations.of(context);
       AppAlerts.success(context, message: t.profile.saveSuccess);
     } catch (e) {
       if (!mounted) return;
-      final t = Translations.of(context);
       AppAlerts.error(context, message: t.profile.saveError, detail: e);
     } finally {
       if (mounted) setState(() => _isSaving = false);
@@ -272,6 +289,33 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   _selectedPhoneCountryIso2 = phone.countryISOCode;
                   _phoneDigits = _digitsOnly(phone.completeNumber);
                 },
+              ),
+              const SizedBox(height: 14),
+              _Label(label: t.profile.documentType),
+              DropdownButtonFormField<DocumentType>(
+                value: _selectedDocumentType,
+                dropdownColor: ThemeTokens.surface,
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                ),
+                items: DocumentType.values.map((type) {
+                  return DropdownMenuItem(value: type, child: Text(type.displayLabel));
+                }).toList(),
+                onChanged: (value) {
+                  if (value != null) setState(() => _selectedDocumentType = value);
+                },
+              ),
+              const SizedBox(height: 14),
+              _Label(label: t.profile.documentNumber),
+              TextFormField(
+                controller: _documentNumberController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(hintText: t.profile.documentNumberHint),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                t.profile.identificationHint,
+                style: const TextStyle(color: ThemeTokens.textSecondary, fontSize: 13),
               ),
               const SizedBox(height: 14),
               _Label(label: t.profile.emailAddress),
